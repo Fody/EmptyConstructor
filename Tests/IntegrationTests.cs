@@ -19,7 +19,7 @@ public class IntegrationTests
         beforeAssemblyPath = Path.GetFullPath(@"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll");
 #if (!DEBUG)
 
-        assemblyPath = assemblyPath.Replace("Debug", "Release");
+        beforeAssemblyPath = beforeAssemblyPath.Replace("Debug", "Release");
 #endif
 
         afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "2.dll");
