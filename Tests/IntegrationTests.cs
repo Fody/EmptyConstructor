@@ -11,22 +11,25 @@ public class IntegrationTests
 {
     Assembly assembly;
     List<string> warnings = new List<string>();
+    string beforeAssemblyPath;
+    string afterAssemblyPath;
+
     public IntegrationTests()
     {
-        var assemblyPath = Path.GetFullPath(@"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll");
+        beforeAssemblyPath = Path.GetFullPath(@"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll");
 #if (!DEBUG)
 
         assemblyPath = assemblyPath.Replace("Debug", "Release");
 #endif
 
-        var newAssembly = assemblyPath.Replace(".dll", "2.dll");
-        File.Copy(assemblyPath, newAssembly, true);
+        afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "2.dll");
+        File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
         
         var assemblyResolver = new MockAssemblyResolver
             {
-                Directory = Path.GetDirectoryName(assemblyPath)
+                Directory = Path.GetDirectoryName(beforeAssemblyPath)
             };
-        var moduleDefinition = ModuleDefinition.ReadModule(newAssembly,new ReaderParameters
+        var moduleDefinition = ModuleDefinition.ReadModule(afterAssemblyPath,new ReaderParameters
             {
                 AssemblyResolver = assemblyResolver
             });
@@ -38,9 +41,9 @@ public class IntegrationTests
                               };
 
         weavingTask.Execute();
-        moduleDefinition.Write(newAssembly);
+        moduleDefinition.Write(afterAssemblyPath);
 
-        assembly = Assembly.LoadFile(newAssembly);
+        assembly = Assembly.LoadFile(afterAssemblyPath);
     }
 
     [Test]
@@ -98,7 +101,7 @@ public class IntegrationTests
     [Test]
     public void PeVerify()
     {
-        Verifier.Verify(assembly.CodeBase.Remove(0, 8));
+        Verifier.Verify(beforeAssemblyPath,afterAssemblyPath);
     }
 #endif
 
