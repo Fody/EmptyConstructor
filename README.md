@@ -4,5 +4,11 @@ Adds an empty constructor to classes even if you have a non-empty one defined.
 
 [Introduction to Fody](http://github.com/Fody/Fody/wiki/SampleUsage)
 
-## Nuget package http://nuget.org/packages/EmptyConstructor.Fody 
+## Nuget
+
+Nuget package http://nuget.org/packages/EmptyConstructor.Fody 
+
+To Install from the Nuget Package Manager Console 
+    
+    PM> Install-Package EmptyConstructor.Fody
 
