@@ -9,8 +9,8 @@
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
     <projectUrl>http://github.com/Fody/EmptyConstructor</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>https://raw.github.com/Fody/EmptyConstructor/master/Icons/package_icon.png</iconUrl>
     <description>Injects an empty constructor into classes.</description>
-    <summary />
     <language>en-AU</language>
     <tags>Empty Constructor, ILWeaving, Fody, Cecil</tags>
     <dependencies>

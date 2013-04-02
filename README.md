@@ -12,3 +12,10 @@ To Install from the Nuget Package Manager Console
     
     PM> Install-Package EmptyConstructor.Fody
 
+
+## Icon
+
+Icon courtesy of [The Noun Project](http://thenounproject.com)
+
+
+
