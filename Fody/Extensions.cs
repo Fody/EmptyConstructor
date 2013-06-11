@@ -1,7 +1,7 @@
 using System.Linq;
 using Mono.Cecil;
 
-public static class Exstensions
+public static class Extensions
 {
     public static bool HasEmptyConstructor(this TypeDefinition typeDefinition)
     {
