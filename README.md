@@ -1,3 +1,5 @@
+![Icon](https://raw.github.com/Fody/EmptyConstructor/master/Icons/package_icon.png)
+
 ## This is an add-in for [Fody](https://github.com/Fody/Fody/) 
 
 Adds an empty constructor to classes even if you have a non-empty one defined.
