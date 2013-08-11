@@ -83,6 +83,13 @@ public class IntegrationTests
         Activator.CreateInstance(type);
     }
     [Test]
+    public void ClassWithDefaultSingleParamConstructor()
+    {
+        var type = assembly.GetType("ClassWithDefaultSingleParamConstructor");
+        Assert.AreEqual(1,type.GetConstructors().Length);
+        Activator.CreateInstance(type,"aString");
+    }
+    [Test]
     public void ClassWithEmptyConstructor()
     {
         var type = assembly.GetType("ClassWithEmptyConstructor");

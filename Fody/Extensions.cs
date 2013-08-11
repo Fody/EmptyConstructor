@@ -15,7 +15,26 @@ public static class Extensions
 
     public static bool IsEmptyConstructor(this MethodDefinition x)
     {
-        return x.IsConstructor && x.Parameters.Count == 0;
+        if (!x.IsConstructor)
+        {
+            return false;
+        }
+        if (x.Parameters.Count == 0)
+        {
+            return true;
+        }
+        if (x.Parameters.Count == 1)
+        {
+            var attributes = x.Parameters.First().Attributes;
+            if (
+                ((attributes & ParameterAttributes.Optional) != 0) &&
+                ((attributes & ParameterAttributes.HasDefault) != 0)
+                )
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static bool IsDelegate(this TypeDefinition typeDefinition)

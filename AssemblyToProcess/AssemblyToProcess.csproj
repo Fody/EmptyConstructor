@@ -41,21 +41,50 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="ClassInheritWithBothConstructors.cs" />
-    <Compile Include="ClassInheritWithEmptyConstructor.cs" />
-    <Compile Include="ClassInheritWithEmptyConstructorFromOtherAssembly.cs" />
-    <Compile Include="ClassInheritWithNoEmptyConstructorFromOtherAssembly.cs" />
-    <Compile Include="ClassInheritWithPrivateConstructor.cs" />
-    <Compile Include="ClassWithBothConstructors.cs" />
-    <Compile Include="ClassWithEmptyConstructor.cs" />
-    <Compile Include="ClassInheritWithNoEmptyConstructor.cs" />
+    <Compile Include="ClassAbstractWithEmptyConstructor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassInheritAbstractWithEmptyConstructor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassInheritWithBothConstructors.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassInheritWithEmptyConstructor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassInheritWithEmptyConstructorFromOtherAssembly.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassInheritWithNoEmptyConstructor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassInheritWithNoEmptyConstructorFromOtherAssembly.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassInheritWithPrivateConstructor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassWithBothConstructors.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassWithDefaultSingleParamConstructor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassWithEmptyConstructor.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ClassWithNoEmptyConstructor.cs" />
-    <Compile Include="ClassAbstractWithEmptyConstructor.cs" />
-    <Compile Include="ClassInheritAbstractWithEmptyConstructor.cs" />
-    <Compile Include="ClassWithPrivateConstructor.cs" />
+    <Compile Include="ClassWithPrivateConstructor.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SimpleDelegate.cs" />
-    <Compile Include="SimpleInterface.cs" />
-    <Compile Include="SimpleStruct.cs" />
+    <Compile Include="SimpleInterface.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SimpleStruct.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AssemblyToReference\AssemblyToReference.csproj">
