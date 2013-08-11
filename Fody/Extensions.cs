@@ -1,5 +1,6 @@
 using System.Linq;
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 
 public static class Extensions
 {
@@ -13,9 +14,22 @@ public static class Extensions
         return typeDefinition.Methods.FirstOrDefault(IsEmptyConstructor);
     }
 
+
+    public static Instruction Clone(this Instruction instruction)
+    {
+        var cloned = Instruction.Create(OpCodes.Ldarg_0);
+        cloned.OpCode = instruction.OpCode;
+        cloned.Operand = instruction.Operand;
+        return cloned;
+    }
+
     public static bool IsEmptyConstructor(this MethodDefinition x)
     {
         if (!x.IsConstructor)
+        {
+            return false;
+        }
+        if (x.IsStatic)
         {
             return false;
         }

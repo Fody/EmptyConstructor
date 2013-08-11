@@ -5,7 +5,6 @@ using System.Reflection;
 using Mono.Cecil;
 using NUnit.Framework;
 
-
 [TestFixture]
 public class IntegrationTests
 {
@@ -52,36 +51,52 @@ public class IntegrationTests
         var type = assembly.GetType("ClassInheritWithBothConstructors");
         Activator.CreateInstance(type);
     }
+
     [Test]
     public void ClassInheritWithEmptyConstructorFromOtherAssembly()
     {
         var type = assembly.GetType("ClassInheritWithEmptyConstructorFromOtherAssembly");
         Activator.CreateInstance(type);
     }
+
     [Test]
     public void ClassInheritAbstractWithEmptyConstructor()
     {
         var type = assembly.GetType("ClassInheritAbstractWithEmptyConstructor");
         Activator.CreateInstance(type);
     }
+
+    [Test]
+    public void ClassWithInitializedFields()
+    {
+        var type = assembly.GetType("ClassWithInitializedFields");
+        var instance = (dynamic)Activator.CreateInstance(type);
+        Assert.AreEqual(9, instance.X);
+        Assert.AreEqual("aString", instance.Y);
+        Assert.IsNotNull( instance.Z);
+    }
+    
     [Test]
     public void ClassInheritWithEmptyConstructor()
     {
         var type = assembly.GetType("ClassInheritWithEmptyConstructor");
         Activator.CreateInstance(type);
     }
+
     [Test]
-    public void ClassInheritWithNoEmptyConstructor()
+    public void ClassInheritWithNonEmptyConstructor()
     {
-        var type = assembly.GetType("ClassInheritWithNoEmptyConstructor");
+        var type = assembly.GetType("ClassInheritWithNonEmptyConstructor");
         Activator.CreateInstance(type);
     }
+
     [Test]
     public void ClassWithBothConstructors()
     {
         var type = assembly.GetType("ClassWithBothConstructors");
         Activator.CreateInstance(type);
     }
+
     [Test]
     public void ClassWithDefaultSingleParamConstructor()
     {
@@ -89,16 +104,18 @@ public class IntegrationTests
         Assert.AreEqual(1,type.GetConstructors().Length);
         Activator.CreateInstance(type,"aString");
     }
+
     [Test]
     public void ClassWithEmptyConstructor()
     {
         var type = assembly.GetType("ClassWithEmptyConstructor");
         Activator.CreateInstance(type);
     }
+
     [Test]
-    public void ClassWithNoEmptyConstructor()
+    public void ClassWithNonEmptyConstructor()
     {
-        var type = assembly.GetType("ClassWithNoEmptyConstructor");
+        var type = assembly.GetType("ClassWithNonEmptyConstructor");
         Activator.CreateInstance(type);
     }
 

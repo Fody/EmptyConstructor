@@ -1,4 +1,4 @@
-public class ClassWithNoEmptyConstructor
+public class ClassWithNonEmptyConstructor
 {
-    public ClassWithNoEmptyConstructor(int x) { }
+    public ClassWithNonEmptyConstructor(int x) { }
 }

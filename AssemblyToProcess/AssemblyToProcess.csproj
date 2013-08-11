@@ -56,10 +56,10 @@
     <Compile Include="ClassInheritWithEmptyConstructorFromOtherAssembly.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ClassInheritWithNoEmptyConstructor.cs">
+    <Compile Include="ClassInheritWithNonEmptyConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ClassInheritWithNoEmptyConstructorFromOtherAssembly.cs">
+    <Compile Include="ClassInheritWithNonEmptyConstructorFromOtherAssembly.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ClassInheritWithPrivateConstructor.cs">
@@ -74,10 +74,14 @@
     <Compile Include="ClassWithEmptyConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ClassWithNoEmptyConstructor.cs" />
+    <Compile Include="ClassWithInitializedFields.cs" />
+    <Compile Include="ClassWithNoEmptyConstructor.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ClassWithPrivateConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Simple.cs" />
     <Compile Include="SimpleDelegate.cs" />
     <Compile Include="SimpleInterface.cs">
       <SubType>Code</SubType>
