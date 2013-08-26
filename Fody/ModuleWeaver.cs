@@ -40,6 +40,11 @@ public class ModuleWeaver
             {
                 continue;
             }
+            if (type.IsStaticClass())
+            {
+                continue;
+            }
+
             var baseType = type.BaseType;
             if (baseType == null)
             {
@@ -116,8 +121,10 @@ public class ModuleWeaver
 
     static IEnumerable<Instruction> GetFieldInitializations(TypeDefinition type)
     {
-        var list = new List<Instruction>();
         var otherConstructor = type.Methods.First(x => x.IsConstructor && !x.IsStatic);
+
+        var list = new List<Instruction>();
+
         foreach (var instruction in otherConstructor.Body.Instructions)
         {
             var isBaseConstructorCall = IsBaseConstructorCall(type, instruction);

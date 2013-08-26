@@ -74,14 +74,18 @@
     <Compile Include="ClassWithEmptyConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ClassWithInitializedFields.cs" />
+    <Compile Include="ClassWithInitializedFields.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ClassWithNoEmptyConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ClassWithPrivateConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Simple.cs" />
+    <Compile Include="Simple.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SimpleDelegate.cs" />
     <Compile Include="SimpleInterface.cs">
       <SubType>Code</SubType>
@@ -89,6 +93,7 @@
     <Compile Include="SimpleStruct.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="StaticClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AssemblyToReference\AssemblyToReference.csproj">

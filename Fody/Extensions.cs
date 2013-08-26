@@ -14,6 +14,11 @@ public static class Extensions
         return typeDefinition.Methods.FirstOrDefault(IsEmptyConstructor);
     }
 
+    public static bool IsStaticClass(this TypeDefinition typeDefinition)
+    {
+        return !typeDefinition.Methods.Any(x => x.IsConstructor && !x.IsStatic);
+    }
+
 
     public static Instruction Clone(this Instruction instruction)
     {
