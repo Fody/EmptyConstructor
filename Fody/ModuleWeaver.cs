@@ -99,6 +99,7 @@ public class ModuleWeaver
 
     MethodDefinition AddEmptyConstructor(TypeDefinition type, MethodReference baseEmptyConstructor)
     {
+        LogInfo("Processing " + type.FullName);
         var methodAttributes = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
         var method = new MethodDefinition(".ctor", methodAttributes, ModuleDefinition.TypeSystem.Void);
         foreach (var instruction in GetFieldInitializations(type))
