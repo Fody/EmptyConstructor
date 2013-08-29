@@ -76,7 +76,7 @@
   <ItemGroup>
     <Compile Include="ConfigReader.cs" />
     <Compile Include="ConfigReaderTests.cs" />
-    <Compile Include="Copy of WithIncludesTests.cs" />
+    <Compile Include="WithExcludesTests.cs" />
     <Compile Include="WithIncludesTests.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="InclusionChecker.cs" />
