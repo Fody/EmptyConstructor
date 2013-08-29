@@ -17,13 +17,12 @@ public class IntegrationTests
     {
         beforeAssemblyPath = Path.GetFullPath(@"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll");
 #if (!DEBUG)
-
         beforeAssemblyPath = beforeAssemblyPath.Replace("Debug", "Release");
 #endif
 
         afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "2.dll");
         File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
-        
+
         var assemblyResolver = new MockAssemblyResolver
             {
                 Directory = Path.GetDirectoryName(beforeAssemblyPath)
@@ -48,28 +47,28 @@ public class IntegrationTests
     [Test]
     public void ClassInheritWithBothConstructors()
     {
-        var type = assembly.GetType("ClassInheritWithBothConstructors");
+        var type = assembly.GetType("ClassInheritWithBothConstructors", true);
         Activator.CreateInstance(type);
     }
 
     [Test]
     public void ClassInheritWithEmptyConstructorFromOtherAssembly()
     {
-        var type = assembly.GetType("ClassInheritWithEmptyConstructorFromOtherAssembly");
+        var type = assembly.GetType("ClassInheritWithEmptyConstructorFromOtherAssembly", true);
         Activator.CreateInstance(type);
     }
 
     [Test]
     public void ClassInheritAbstractWithEmptyConstructor()
     {
-        var type = assembly.GetType("ClassInheritAbstractWithEmptyConstructor");
+        var type = assembly.GetType("ClassInheritAbstractWithEmptyConstructor", true);
         Activator.CreateInstance(type);
     }
 
     [Test]
     public void ClassWithInitializedFields()
     {
-        var type = assembly.GetType("ClassWithInitializedFields");
+        var type = assembly.GetType("ClassWithInitializedFields", true);
         var instance = (dynamic)Activator.CreateInstance(type);
         Assert.AreEqual(9, instance.X);
         Assert.AreEqual("aString", instance.Y);
@@ -79,28 +78,28 @@ public class IntegrationTests
     [Test]
     public void ClassInheritWithEmptyConstructor()
     {
-        var type = assembly.GetType("ClassInheritWithEmptyConstructor");
+        var type = assembly.GetType("ClassInheritWithEmptyConstructor", true);
         Activator.CreateInstance(type);
     }
 
     [Test]
     public void ClassInheritWithNonEmptyConstructor()
     {
-        var type = assembly.GetType("ClassInheritWithNonEmptyConstructor");
+        var type = assembly.GetType("ClassInheritWithNonEmptyConstructor", true);
         Activator.CreateInstance(type);
     }
 
     [Test]
     public void ClassWithBothConstructors()
     {
-        var type = assembly.GetType("ClassWithBothConstructors");
+        var type = assembly.GetType("ClassWithBothConstructors", true);
         Activator.CreateInstance(type);
     }
 
     [Test]
     public void ClassWithDefaultSingleParamConstructor()
     {
-        var type = assembly.GetType("ClassWithDefaultSingleParamConstructor");
+        var type = assembly.GetType("ClassWithDefaultSingleParamConstructor", true);
         Assert.AreEqual(1,type.GetConstructors().Length);
         Activator.CreateInstance(type,"aString");
     }
@@ -108,14 +107,14 @@ public class IntegrationTests
     [Test]
     public void ClassWithEmptyConstructor()
     {
-        var type = assembly.GetType("ClassWithEmptyConstructor");
+        var type = assembly.GetType("ClassWithEmptyConstructor", true);
         Activator.CreateInstance(type);
     }
 
     [Test]
     public void ClassWithNonEmptyConstructor()
     {
-        var type = assembly.GetType("ClassWithNonEmptyConstructor");
+        var type = assembly.GetType("ClassWithNonEmptyConstructor", true);
         Activator.CreateInstance(type);
     }
 

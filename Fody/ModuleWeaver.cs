@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
-public class ModuleWeaver
+public partial class ModuleWeaver
 {
     public Action<string> LogInfo { get; set; }
     public Action<string> LogWarning { get; set; }
     public ModuleDefinition ModuleDefinition { get; set; }
     public IAssemblyResolver AssemblyResolver { get; set; }
-    public XElement Config { get; set; }
     
     public ModuleWeaver()
     {
@@ -21,6 +19,8 @@ public class ModuleWeaver
 
     public void Execute()
     {
+        ReadConfig();
+        ProcessIncludesExcludes();
         var queue = new Queue<TypeDefinition>(ModuleDefinition.GetTypes());
 
         var processed = new Dictionary<TypeDefinition, MethodReference>();
@@ -59,7 +59,10 @@ public class ModuleWeaver
                 continue;
             }
 
-
+            if (!ShouldIncludeType(type))
+            {
+                continue;
+            }
             MethodReference baseEmptyConstructor;
             var baseTypeDefinition = baseType as TypeDefinition;
             if (baseTypeDefinition != null)

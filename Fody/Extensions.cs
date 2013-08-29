@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -7,6 +8,16 @@ public static class Extensions
     public static bool HasEmptyConstructor(this TypeDefinition typeDefinition)
     {
         return typeDefinition.Methods.Any(IsEmptyConstructor);
+    }
+
+    public static bool ContainsAttribute(this IEnumerable<CustomAttribute> attributes, string attributeName)
+    {
+        return attributes.Any(attribute => attribute.Constructor.DeclaringType.Name == attributeName);
+    }
+
+    public static IEnumerable<string> NonEmpty(this IEnumerable<string> list)
+    {
+        return list.Select(x => x.Trim()).Where(x => x != string.Empty);
     }
 
     public static MethodDefinition GetEmptyConstructor(this TypeDefinition typeDefinition)
