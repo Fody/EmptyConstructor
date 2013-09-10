@@ -10,6 +10,7 @@ public partial class ModuleWeaver
     public Action<string> LogWarning { get; set; }
     public ModuleDefinition ModuleDefinition { get; set; }
     public IAssemblyResolver AssemblyResolver { get; set; }
+    public MethodAttributes Visibility = MethodAttributes.Public;
     
     public ModuleWeaver()
     {
@@ -108,7 +109,7 @@ public partial class ModuleWeaver
     MethodDefinition AddEmptyConstructor(TypeDefinition type, MethodReference baseEmptyConstructor)
     {
         LogInfo("Processing " + type.FullName);
-        var methodAttributes = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
+        var methodAttributes = Visibility | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
         var method = new MethodDefinition(".ctor", methodAttributes, ModuleDefinition.TypeSystem.Void);
         foreach (var instruction in GetFieldInitializations(type))
         {

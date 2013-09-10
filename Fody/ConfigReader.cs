@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Mono.Cecil;
 
 public partial class ModuleWeaver
 {
@@ -16,6 +17,7 @@ public partial class ModuleWeaver
             return;
         }
 
+        ReadVisibility();
         ReadExcludes();
         ReadIncludes();
 
@@ -26,6 +28,25 @@ public partial class ModuleWeaver
     }
 
 
+    void ReadVisibility()
+    {
+        var visibilityAttribute = Config.Attribute("Visibility");
+        if (visibilityAttribute != null)
+        {
+            if (visibilityAttribute.Value == "public")
+            {
+                Visibility = MethodAttributes.Public;
+                return;
+            }
+            if (visibilityAttribute.Value == "family")
+            {
+                Visibility = MethodAttributes.Family;
+                return;
+            }
+            var message = string.Format("Could not convert '{0}' to a visibility. Only 'public' or 'family' are allowed.", visibilityAttribute.Value);
+            throw new WeavingException(message);
+        }
+    }
     void ReadExcludes()
     {
         var excludeNamespacesAttribute = Config.Attribute("ExcludeNamespaces");

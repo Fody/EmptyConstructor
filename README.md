@@ -14,7 +14,6 @@ To Install from the Nuget Package Manager Console
     
     PM> Install-Package EmptyConstructor.Fody
 
-
 # Configuration Options
 
 ## Exclude types with an Attribute
@@ -39,6 +38,20 @@ So your class will look like this
  
 These config options are access by modifying the `EmptyConstructor` node in FodyWeavers.xml 
  
+### Visibility
+
+The visibility to use when injecting constructors.
+
+Can not be defined with `Visibility`.
+
+Allowed values: `public` or `family` (aka `protected`)
+
+Defaults to `public`.
+
+For example
+
+    <EmptyConstructor Visibility='family'/>
+ 
 ### ExcludeNamespaces
 
 A list of namespaces to exclude.
@@ -61,7 +74,7 @@ Or as a attribute with items delimited by a pipe `|`.
     <EmptyConstructor ExcludeNamespaces='Foo|Bar'/>
     
         
-## IncludeNamespaces
+### IncludeNamespaces
 
 A list of namespaces to include.
 

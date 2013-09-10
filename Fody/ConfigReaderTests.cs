@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using Mono.Cecil;
 using NUnit.Framework;
 
 [TestFixture]
@@ -21,6 +22,33 @@ Foo.Bar
         Assert.AreEqual("Foo", moduleWeaver.ExcludeNamespaces[0]);
         Assert.AreEqual("Bar", moduleWeaver.ExcludeNamespaces[1]);
         Assert.AreEqual("Foo.Bar", moduleWeaver.ExcludeNamespaces[2]);
+    }
+
+    [Test]
+    public void VisibilityFamily()
+    {
+        var xElement = XElement.Parse("<EmptyConstructor Visibility='family'/>");
+        var moduleWeaver = new ModuleWeaver { Config = xElement };
+        moduleWeaver.ReadConfig();
+        Assert.AreEqual(MethodAttributes.Family, moduleWeaver.Visibility);
+    }
+
+    [Test]
+    public void VisibilityDefault()
+    {
+        var xElement = XElement.Parse("<EmptyConstructor/>");
+        var moduleWeaver = new ModuleWeaver { Config = xElement };
+        moduleWeaver.ReadConfig();
+        Assert.AreEqual(MethodAttributes.Public, moduleWeaver.Visibility);
+    }
+
+    [Test]
+    public void VisibilityPublic()
+    {
+        var xElement = XElement.Parse("<EmptyConstructor Visibility='public'/>");
+        var moduleWeaver = new ModuleWeaver { Config = xElement };
+        moduleWeaver.ReadConfig();
+        Assert.AreEqual(MethodAttributes.Public, moduleWeaver.Visibility);
     }
 
     [Test]
