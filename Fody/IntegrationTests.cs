@@ -109,7 +109,7 @@ public class IntegrationTests
     public void ClassWithDefaultSingleParamConstructor()
     {
         var type = assembly.GetType("ClassWithDefaultSingleParamConstructor", true);
-        Assert.AreEqual(1,type.GetConstructors().Length);
+        Assert.AreEqual(2,type.GetConstructors().Length);
         Activator.CreateInstance(type,"aString");
     }
 
