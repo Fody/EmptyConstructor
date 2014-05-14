@@ -94,6 +94,7 @@
     <Compile Include="ClassWithEmptyConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClassWithGeneric.cs" />
     <Compile Include="ClassWithInitializedFields.cs">
       <SubType>Code</SubType>
     </Compile>
