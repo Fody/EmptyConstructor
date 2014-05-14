@@ -1,4 +1,5 @@
-public class ClassWithNonEmptyConstructor
+public class ClassWithNoEmptyConstructor
 {
-    public ClassWithNonEmptyConstructor(int x) { }
+// ReSharper disable once UnusedParameter.Local
+    public ClassWithNoEmptyConstructor(string x) { }
 }

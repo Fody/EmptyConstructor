@@ -53,17 +53,6 @@ public static class Extensions
         {
             return true;
         }
-        if (x.Parameters.Count == 1)
-        {
-            var attributes = x.Parameters.First().Attributes;
-            if (
-                ((attributes & ParameterAttributes.Optional) != 0) &&
-                ((attributes & ParameterAttributes.HasDefault) != 0)
-                )
-            {
-                return true;
-            }
-        }
         return false;
     }
 

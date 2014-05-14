@@ -24,19 +24,19 @@ public class IntegrationTests
         File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
 
         var assemblyResolver = new MockAssemblyResolver
-            {
-                Directory = Path.GetDirectoryName(beforeAssemblyPath)
-            };
-        var moduleDefinition = ModuleDefinition.ReadModule(afterAssemblyPath,new ReaderParameters
-            {
-                AssemblyResolver = assemblyResolver
-            });
+        {
+            Directory = Path.GetDirectoryName(beforeAssemblyPath)
+        };
+        var moduleDefinition = ModuleDefinition.ReadModule(afterAssemblyPath, new ReaderParameters
+        {
+            AssemblyResolver = assemblyResolver
+        });
         var weavingTask = new ModuleWeaver
-                              {
-                                  ModuleDefinition = moduleDefinition,
-                                  AssemblyResolver = assemblyResolver,
-                                  LogWarning =s => warnings.Add(s)
-                              };
+        {
+            ModuleDefinition = moduleDefinition,
+            AssemblyResolver = assemblyResolver,
+            LogWarning = s => warnings.Add(s)
+        };
 
         weavingTask.Execute();
         moduleDefinition.Write(afterAssemblyPath);
@@ -66,6 +66,15 @@ public class IntegrationTests
     }
 
     [Test]
+    public void ClassInheritWithNullableParam()
+    {
+        var type = assembly.GetType("ClassInheritWithNullableParam", true);
+        Activator.CreateInstance(type);
+    }
+
+
+[Test]
+    [Explicit]
     public void ClassWithInitializedFields()
     {
         var type = assembly.GetType("ClassWithInitializedFields", true);
@@ -112,9 +121,9 @@ public class IntegrationTests
     }
 
     [Test]
-    public void ClassWithNonEmptyConstructor()
+    public void ClassWithNoEmptyConstructor()
     {
-        var type = assembly.GetType("ClassWithNonEmptyConstructor", true);
+        var type = assembly.GetType("ClassWithNoEmptyConstructor", true);
         Activator.CreateInstance(type);
     }
 

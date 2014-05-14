@@ -55,7 +55,12 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
+    <ProjectReference Include="..\AssemblyToReference\AssemblyToReference.csproj">
+      <Project>{70804914-c3d9-4737-bcb8-b3d40f305db3}</Project>
+      <Name>AssemblyToReference</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="ClassAbstractWithEmptyConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -92,13 +97,21 @@
     <Compile Include="ClassWithInitializedFields.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClassWithInnerClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ClassWithNoEmptyConstructor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassWithNoEmptyConstructorInNamespace.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassWithNullableParam.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ClassWithPrivateConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ClassWithNoEmptyConstructorInNamespace.cs" />
     <Compile Include="Simple.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -109,13 +122,9 @@
     <Compile Include="SimpleStruct.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="StaticClass.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AssemblyToReference\AssemblyToReference.csproj">
-      <Project>{70804914-c3d9-4737-bcb8-b3d40f305db3}</Project>
-      <Name>AssemblyToReference</Name>
-    </ProjectReference>
+    <Compile Include="StaticClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

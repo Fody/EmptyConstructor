@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
@@ -11,7 +10,7 @@ public partial class ModuleWeaver
     public ModuleDefinition ModuleDefinition { get; set; }
     public IAssemblyResolver AssemblyResolver { get; set; }
     public MethodAttributes Visibility = MethodAttributes.Public;
-    
+
     public ModuleWeaver()
     {
         LogInfo = s => { };
@@ -96,11 +95,11 @@ public partial class ModuleWeaver
                     continue;
                 }
                 var constructor = AddEmptyConstructor(type, baseEmptyConstructor);
-               processed.Add(type, constructor);
+                processed.Add(type, constructor);
             }
             else
             {
-                processed.Add(type, null);   
+                processed.Add(type, null);
             }
 
         }
@@ -111,11 +110,7 @@ public partial class ModuleWeaver
         LogInfo("Processing " + type.FullName);
         var methodAttributes = Visibility | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
         var method = new MethodDefinition(".ctor", methodAttributes, ModuleDefinition.TypeSystem.Void);
-        foreach (var instruction in GetFieldInitializations(type))
-        {
-            var cloned = instruction.Clone();
-            method.Body.Instructions.Add(cloned);
-        }
+        method.Body.Instructions.Add(Instruction.Create(OpCodes.Ldarg_0));
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Call, baseEmptyConstructor));
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
         type.Methods.Add(method);
@@ -123,49 +118,4 @@ public partial class ModuleWeaver
     }
 
 
-    static IEnumerable<Instruction> GetFieldInitializations(TypeDefinition type)
-    {
-        var otherConstructor = type.Methods.First(x => x.IsConstructor && !x.IsStatic);
-
-        var list = new List<Instruction>();
-
-        foreach (var instruction in otherConstructor.Body.Instructions)
-        {
-            var isBaseConstructorCall = IsBaseConstructorCall(type, instruction);
-            if (isBaseConstructorCall)
-            {
-                break;
-            }
-            list.Add(instruction);
-        }
-        for (var i = list.Count-1; i >= 0; i--)
-        {
-            var instruction = list[i];
-            if (instruction.OpCode == OpCodes.Ldarg_0)
-            {
-                break;
-            }
-            list.RemoveAt(i);
-        }
-        return list;
-    }
-
-    static bool IsBaseConstructorCall(TypeDefinition type, Instruction instruction)
-    {
-        if (instruction.OpCode == OpCodes.Call)
-        {
-            var methodReference = instruction.Operand as MethodReference;
-            if (methodReference != null)
-            {
-                if (methodReference.Name == ".ctor")
-                {
-                    if (methodReference.DeclaringType == type.BaseType)
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
 }

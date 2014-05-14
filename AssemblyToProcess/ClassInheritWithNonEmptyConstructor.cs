@@ -1,6 +1,6 @@
-public class ClassInheritWithNonEmptyConstructor : ClassWithNonEmptyConstructor
+public class ClassInheritWithNonEmptyConstructor : ClassWithNoEmptyConstructor
 {
-    public ClassInheritWithNonEmptyConstructor(int x)
+    public ClassInheritWithNonEmptyConstructor(string x)
         : base(x)
     {
     }
