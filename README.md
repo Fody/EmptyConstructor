@@ -6,14 +6,12 @@ Adds an empty constructor to classes even if you have a non-empty one defined.
 
 [Introduction to Fody](http://github.com/Fody/Fody/wiki/SampleUsage)
 
-## Nuget
+## The nuget package  [![NuGet Status](http://img.shields.io/nuget/v/EmptyConstructor.Fody.svg?style=flat)](https://www.nuget.org/packages/EmptyConstructor.Fody/)
 
-Nuget package http://nuget.org/packages/EmptyConstructor.Fody 
+https://nuget.org/packages/EmptyConstructor.Fody/
 
-To Install from the Nuget Package Manager Console 
+    PM> Install-Package Fody
     
-    PM> Install-Package EmptyConstructor.Fody
-
 # Configuration Options
 
 ## Exclude types with an Attribute
