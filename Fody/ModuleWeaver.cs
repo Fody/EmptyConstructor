@@ -80,7 +80,7 @@ public partial class ModuleWeaver
                     var emptyConstructor = baseType.Resolve().GetEmptyConstructor();
                     if (emptyConstructor != null)
                     {
-                        baseEmptyConstructor = ModuleDefinition.Import(emptyConstructor);
+                        baseEmptyConstructor = ModuleDefinition.ImportReference(emptyConstructor);
                     }
                     external.Add(baseType, baseEmptyConstructor);
                 }
