@@ -43,7 +43,7 @@ public partial class ModuleWeaver
                 Visibility = MethodAttributes.Family;
                 return;
             }
-            var message = string.Format("Could not convert '{0}' to a visibility. Only 'public' or 'family' are allowed.", visibilityAttribute.Value);
+            var message = $"Could not convert '{visibilityAttribute.Value}' to a visibility. Only 'public' or 'family' are allowed.";
             throw new WeavingException(message);
         }
     }

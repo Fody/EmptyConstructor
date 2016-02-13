@@ -91,7 +91,7 @@ public partial class ModuleWeaver
                 if (baseEmptyConstructor.Resolve().IsPrivate)
                 {
                     processed.Add(type, null);
-                    LogWarning(string.Format("Could not inject empty constructor in {0} because the base class has a private parameterless constructor", type.FullName));
+                    LogWarning($"Could not inject empty constructor in {type.FullName} because the base class has a private parameterless constructor");
                     continue;
                 }
                 var constructor = AddEmptyConstructor(type);
