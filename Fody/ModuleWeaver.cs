@@ -5,7 +5,7 @@ using Mono.Cecil.Cil;
 
 public partial class ModuleWeaver
 {
-    public Action<string> LogInfo { get; set; }
+    public Action<string> LogDebug { get; set; }
     public Action<string> LogWarning { get; set; }
     public ModuleDefinition ModuleDefinition { get; set; }
     public IAssemblyResolver AssemblyResolver { get; set; }
@@ -13,7 +13,7 @@ public partial class ModuleWeaver
 
     public ModuleWeaver()
     {
-        LogInfo = s => { };
+        LogDebug = s => { };
         LogWarning = s => { };
     }
 
@@ -107,7 +107,7 @@ public partial class ModuleWeaver
 
     MethodDefinition AddEmptyConstructor(TypeDefinition type)
     {
-        LogInfo("Processing " + type.FullName);
+        LogDebug("Processing " + type.FullName);
         var methodAttributes = Visibility | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
         var method = new MethodDefinition(".ctor", methodAttributes, ModuleDefinition.TypeSystem.Void);
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Ldarg_0));
