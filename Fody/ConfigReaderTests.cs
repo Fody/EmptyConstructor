@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 using Mono.Cecil;
 using NUnit.Framework;
 
@@ -107,13 +108,13 @@ Foo.Bar
     }
 
     [Test]
-    [ExpectedException(ExpectedMessage = "Either configure IncludeNamespaces OR ExcludeNamespaces, not both.")]
     public void IncludeAndExcludeNamespacesAttribute()
     {
         var xElement = XElement.Parse(@"
 <EmptyConstructor IncludeNamespaces='Bar' ExcludeNamespaces='Foo'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
-        moduleWeaver.ReadConfig();
+        var exception = Assert.Throws<WeavingException>(() => moduleWeaver.ReadConfig());
+        Assert.AreEqual("Either configure IncludeNamespaces OR ExcludeNamespaces, not both.",exception.Message);
     }
 
     [Test]

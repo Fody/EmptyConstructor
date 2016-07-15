@@ -15,7 +15,7 @@ public class WithIncludesTests
 
     public WithIncludesTests()
     {
-        beforeAssemblyPath = Path.GetFullPath(@"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll");
+        beforeAssemblyPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory,@"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll"));
 #if (!DEBUG)
         beforeAssemblyPath = beforeAssemblyPath.Replace("Debug", "Release");
 #endif
@@ -45,7 +45,7 @@ public class WithIncludesTests
         assembly = Assembly.LoadFile(afterAssemblyPath);
     }
 
-  
+
 
     [Test]
     public void ClassInheritWithNonEmptyConstructor()
