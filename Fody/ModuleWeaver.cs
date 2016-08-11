@@ -44,6 +44,10 @@ public partial class ModuleWeaver
             {
                 continue;
             }
+            if (Visibility == MethodAttributes.Family && type.IsSealed)
+            {
+                continue;
+            }
 
             var baseType = type.BaseType;
             if (baseType == null)
