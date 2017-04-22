@@ -27,19 +27,21 @@ public class IntegrationTests
         {
             Directory = Path.GetDirectoryName(beforeAssemblyPath)
         };
-        var moduleDefinition = ModuleDefinition.ReadModule(afterAssemblyPath, new ReaderParameters
+        using (var moduleDefinition = ModuleDefinition.ReadModule(beforeAssemblyPath, new ReaderParameters
         {
             AssemblyResolver = assemblyResolver
-        });
-        var weavingTask = new ModuleWeaver
+        }))
         {
-            ModuleDefinition = moduleDefinition,
-            AssemblyResolver = assemblyResolver,
-            LogWarning = s => warnings.Add(s)
-        };
+            var weavingTask = new ModuleWeaver
+            {
+                ModuleDefinition = moduleDefinition,
+                AssemblyResolver = assemblyResolver,
+                LogWarning = s => warnings.Add(s)
+            };
 
-        weavingTask.Execute();
-        moduleDefinition.Write(afterAssemblyPath);
+            weavingTask.Execute();
+            moduleDefinition.Write(afterAssemblyPath);
+        }
 
         assembly = Assembly.LoadFile(afterAssemblyPath);
     }

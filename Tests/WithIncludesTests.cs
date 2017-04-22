@@ -6,57 +6,60 @@ using Mono.Cecil;
 using NUnit.Framework;
 
 [TestFixture]
-public class WithExcludesTests
+public class WithIncludesTests
 {
     Assembly assembly;
     List<string> warnings = new List<string>();
     string beforeAssemblyPath;
     string afterAssemblyPath;
 
-    public WithExcludesTests()
+    public WithIncludesTests()
     {
         beforeAssemblyPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory,@"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll"));
 #if (!DEBUG)
         beforeAssemblyPath = beforeAssemblyPath.Replace("Debug", "Release");
 #endif
 
-        afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "4.dll");
+        afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "3.dll");
         File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
 
         var assemblyResolver = new MockAssemblyResolver
             {
                 Directory = Path.GetDirectoryName(beforeAssemblyPath)
             };
-        var moduleDefinition = ModuleDefinition.ReadModule(afterAssemblyPath,new ReaderParameters
+        using (var moduleDefinition = ModuleDefinition.ReadModule(beforeAssemblyPath, new ReaderParameters
+        {
+            AssemblyResolver = assemblyResolver
+        }))
+        {
+            var weavingTask = new ModuleWeaver
             {
-                AssemblyResolver = assemblyResolver
-            });
-        var weavingTask = new ModuleWeaver
-                              {
-                                  ModuleDefinition = moduleDefinition,
-                                  AssemblyResolver = assemblyResolver,
-                                  ExcludeNamespaces = new List<string>{"MyNameSpace"},
-                                  LogWarning =s => warnings.Add(s)
-                              };
+                ModuleDefinition = moduleDefinition,
+                AssemblyResolver = assemblyResolver,
+                IncludeNamespaces = new List<string>{"MyNameSpace"},
+                LogWarning =s => warnings.Add(s)
+            };
 
-        weavingTask.Execute();
-        moduleDefinition.Write(afterAssemblyPath);
+            weavingTask.Execute();
+            moduleDefinition.Write(afterAssemblyPath);
+        }
 
         assembly = Assembly.LoadFile(afterAssemblyPath);
     }
+
+
 
     [Test]
     public void ClassInheritWithNonEmptyConstructor()
     {
         var type = assembly.GetType("ClassInheritWithNonEmptyConstructor", true);
-        Activator.CreateInstance(type);
+        Assert.AreEqual(1, type.GetConstructors().Length);
     }
-
     [Test]
     public void ClassInheritWithNonEmptyConstructorInNamespace()
     {
         var type = assembly.GetType("MyNameSpace.ClassWithNoEmptyConstructorInNamespace", true);
-        Assert.AreEqual(1, type.GetConstructors().Length);
+        Activator.CreateInstance(type);
     }
 
 
