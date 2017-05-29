@@ -1,4 +1,8 @@
+[![Chat on Gitter Status](https://img.shields.io/gitter/room/fody/fody.svg?style=flat)](https://gitter.im/Fody)
+[![NuGet Status](http://img.shields.io/nuget/v/EmptyConstructor.Fody.svg?style=flat)](https://www.nuget.org/packages/EmptyConstructor.Fody/)
+
 ![Icon](https://raw.github.com/Fody/EmptyConstructor/master/Icons/package_icon.png)
+
 
 ## This is an add-in for [Fody](https://github.com/Fody/Fody/) 
 
@@ -6,13 +10,16 @@ Adds an empty constructor to classes even if you have a non-empty one defined.
 
 [Introduction to Fody](http://github.com/Fody/Fody/wiki/SampleUsage)
 
-## The nuget package  [![NuGet Status](http://img.shields.io/nuget/v/EmptyConstructor.Fody.svg?style=flat)](https://www.nuget.org/packages/EmptyConstructor.Fody/)
+
+## The nuget package
 
 https://nuget.org/packages/EmptyConstructor.Fody/
 
     PM> Install-Package Fody
-    
+
+
 # Configuration Options
+
 
 ## Exclude types with an Attribute
 
@@ -32,10 +39,12 @@ So your class will look like this
         ...
     }
 
+
 ## Include or exclude namespaces
  
 These config options are access by modifying the `EmptyConstructor` node in FodyWeavers.xml 
- 
+
+
 ### Visibility
 
 The visibility to use when injecting constructors.
@@ -49,7 +58,8 @@ Defaults to `public`.
 For example
 
     <EmptyConstructor Visibility='family'/>
- 
+
+
 ### ExcludeNamespaces
 
 A list of namespaces to exclude.
@@ -70,8 +80,8 @@ As an element with items delimited by a newline.
 Or as a attribute with items delimited by a pipe `|`.
 
     <EmptyConstructor ExcludeNamespaces='Foo|Bar'/>
-    
-        
+
+  
 ### IncludeNamespaces
 
 A list of namespaces to include.
@@ -93,9 +103,7 @@ Or as a attribute with items delimited by a pipe `|`.
 
     <EmptyConstructor IncludeNamespaces='Foo|Bar'/>
 
+
 ## Icon
 
 Icon courtesy of [The Noun Project](http://thenounproject.com)
-
-
-
