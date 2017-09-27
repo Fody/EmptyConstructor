@@ -55,6 +55,8 @@
     <Compile Include="ClassAbstractWithEmptyConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClassAbstractWithProtectedConstructor.cs" />
+    <Compile Include="ClassAbstractWithPrivateConstructor.cs" />
     <Compile Include="ClassInheritAbstractWithEmptyConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -101,6 +103,7 @@
     <Compile Include="ClassWithNullableParam.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClassWithProtectedConstructor.cs" />
     <Compile Include="ClassWithPrivateConstructor.cs">
       <SubType>Code</SubType>
     </Compile>
