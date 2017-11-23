@@ -7,7 +7,7 @@ public class MockAssemblyResolver : IAssemblyResolver
 {
     public AssemblyDefinition Resolve(AssemblyNameReference name)
     {
-        var fileName = Path.Combine(Directory, name.Name) + ".dll";
+        var fileName = $"{Path.Combine(Directory, name.Name)}.dll";
         if (File.Exists(fileName))
         {
             return AssemblyDefinition.ReadAssembly(fileName);

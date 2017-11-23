@@ -5,7 +5,6 @@ using NUnit.Framework;
 [TestFixture]
 public class ConfigReaderTests
 {
-
     [Test]
     public void ExcludeNamespacesNode()
     {
@@ -157,5 +156,4 @@ Bar
         Assert.AreEqual("Foo", moduleWeaver.IncludeNamespaces[0]);
         Assert.AreEqual("Bar", moduleWeaver.IncludeNamespaces[1]);
     }
-
 }

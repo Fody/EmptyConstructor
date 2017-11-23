@@ -1,4 +1,5 @@
-public class ClassWithInnerClass 
+// ReSharper disable NotAccessedField.Local
+public class ClassWithInnerClass
 {
     // ReSharper disable once UnusedParameter.Local
     public ClassWithInnerClass(int x) { }

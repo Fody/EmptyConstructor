@@ -17,10 +17,7 @@ public class MakeExistingEmptyConstructorsFamilyIntegrationTests
 
     public MakeExistingEmptyConstructorsFamilyIntegrationTests()
     {
-        beforeAssemblyPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll"));
-#if (!DEBUG)
-        beforeAssemblyPath = beforeAssemblyPath.Replace("Debug", "Release");
-#endif
+        beforeAssemblyPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "AssemblyToProcess.dll");
 
         afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "5.dll");
         File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
@@ -112,5 +109,11 @@ public class MakeExistingEmptyConstructorsFamilyIntegrationTests
 
         Assert.IsTrue(constructorInfo.IsFamily);
         Assert.IsFalse(constructorInfo.IsPublic);
+    }
+
+    [Test]
+    public void PeVerify()
+    {
+        Verifier.Verify(beforeAssemblyPath, afterAssemblyPath);
     }
 }

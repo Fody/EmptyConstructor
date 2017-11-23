@@ -16,10 +16,7 @@ public class IntegrationTests
 
     public IntegrationTests()
     {
-        beforeAssemblyPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll"));
-#if (!DEBUG)
-        beforeAssemblyPath = beforeAssemblyPath.Replace("Debug", "Release");
-#endif
+        beforeAssemblyPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "AssemblyToProcess.dll");
 
         afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "2.dll");
         File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
@@ -75,7 +72,6 @@ public class IntegrationTests
         Activator.CreateInstance(type);
     }
 
-
     [Test]
     [Explicit]
     public void ClassWithInitializedFields()
@@ -86,7 +82,7 @@ public class IntegrationTests
         Assert.AreEqual("aString", instance.Y);
         Assert.IsNotNull( instance.Z);
     }
-    
+
     [Test]
     public void ClassInheritWithEmptyConstructor()
     {
@@ -168,12 +164,9 @@ public class IntegrationTests
         Assert.IsFalse(constructorInfo.IsPublic);
     }
 
-#if(DEBUG)
     [Test]
     public void PeVerify()
     {
         Verifier.Verify(beforeAssemblyPath,afterAssemblyPath);
     }
-#endif
-
 }
