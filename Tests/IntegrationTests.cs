@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Mono.Cecil;
 using NUnit.Framework;
@@ -75,7 +76,7 @@ public class IntegrationTests
     }
 
 
-[Test]
+    [Test]
     [Explicit]
     public void ClassWithInitializedFields()
     {
@@ -129,7 +130,43 @@ public class IntegrationTests
         Activator.CreateInstance(type);
     }
 
+    [Test]
+    public void ClassWithPrivateEmptyConstructor()
+    {
+        var type = assembly.GetType("ClassWithPrivateConstructor", true);
+        Assert.Throws<MissingMethodException>(() => Activator.CreateInstance(type));
+    }
 
+    [Test]
+    public void ClassWithProtectedEmptyConstructor()
+    {
+        var type = assembly.GetType("ClassWithProtectedConstructor", true);
+        Assert.Throws<MissingMethodException>(() => Activator.CreateInstance(type));
+    }
+
+    [Test]
+    public void ClassAbstractWithPrivateEmptyConstructor()
+    {
+        var type = assembly.GetType("ClassAbstractWithPrivateConstructor", true);
+        var constructorInfo = type
+            .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
+            .Single(x => x.GetParameters().Length == 0);
+
+        Assert.IsFalse(constructorInfo.IsPublic);
+        Assert.IsFalse(constructorInfo.IsFamily);
+    }
+
+    [Test]
+    public void ClassAbstractWithProtectedEmptyConstructor()
+    {
+        var type = assembly.GetType("ClassAbstractWithProtectedConstructor", true);
+        var constructorInfo = type
+            .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
+            .Single(x => x.GetParameters().Length == 0);
+
+        Assert.IsTrue(constructorInfo.IsFamily);
+        Assert.IsFalse(constructorInfo.IsPublic);
+    }
 
 #if(DEBUG)
     [Test]

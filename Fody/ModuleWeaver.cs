@@ -10,6 +10,7 @@ public partial class ModuleWeaver
     public ModuleDefinition ModuleDefinition { get; set; }
     public IAssemblyResolver AssemblyResolver { get; set; }
     public MethodAttributes Visibility = MethodAttributes.Public;
+    public bool MakeExistingEmptyConstructorsVisible;
 
     public ModuleWeaver()
     {
@@ -59,6 +60,8 @@ public partial class ModuleWeaver
 
             if (typeEmptyConstructor != null)
             {
+                MakeConstructorVisibleIfConfiguredAndNecessary(typeEmptyConstructor);
+
                 processed.Add(type, typeEmptyConstructor);
                 continue;
             }
@@ -122,5 +125,33 @@ public partial class ModuleWeaver
         return method;
     }
 
-
+    void MakeConstructorVisibleIfConfiguredAndNecessary(MethodDefinition typeEmptyConstructor)
+    {
+        if (!MakeExistingEmptyConstructorsVisible)
+        {
+            return;
+        }
+        if (typeEmptyConstructor.IsPublic)
+        {
+            return;
+        }
+        if (typeEmptyConstructor.DeclaringType.IsAbstract)
+        {
+            return;
+        }
+        if (typeEmptyConstructor.IsFamily)
+        {
+            if (Visibility == MethodAttributes.Public)
+            {
+                typeEmptyConstructor.IsFamily = false;
+                typeEmptyConstructor.IsPublic = true;
+            }
+            return;
+        }
+        if (typeEmptyConstructor.IsPrivate)
+        {
+            typeEmptyConstructor.IsPrivate = false;
+            typeEmptyConstructor.Attributes = typeEmptyConstructor.Attributes | Visibility;
+        }
+    }
 }

@@ -58,7 +58,17 @@ Defaults to `public`.
 For example
 
     <EmptyConstructor Visibility='family'/>
+	
+### Making Existing Empty Constructors Visible
 
+Optionally the visibility of already existing constructors can be increased.
+If this feature is enabled, the visibility of empty-constructors of non-abstract types will be increased to the same visibility as defined by the `Visibility` configuration (see above).
+
+For example
+
+    <EmptyConstructor MakeExistingEmptyConstructorsVisible='True'/>
+	
+Will ensure all constructors on non-abstract types will be `public`.
 
 ### ExcludeNamespaces
 

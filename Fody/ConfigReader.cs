@@ -18,6 +18,7 @@ public partial class ModuleWeaver
         }
 
         ReadVisibility();
+        ReadMakeExistingEmptyConstructorsVisible();
         ReadExcludes();
         ReadIncludes();
 
@@ -26,7 +27,6 @@ public partial class ModuleWeaver
             throw new WeavingException("Either configure IncludeNamespaces OR ExcludeNamespaces, not both.");
         }
     }
-
 
     void ReadVisibility()
     {
@@ -47,6 +47,27 @@ public partial class ModuleWeaver
             throw new WeavingException(message);
         }
     }
+
+    void ReadMakeExistingEmptyConstructorsVisible()
+    {
+        var attribute = Config.Attribute("MakeExistingEmptyConstructorsVisible");
+        if (attribute != null)
+        {
+            if (string.Compare(attribute.Value,"true", StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                MakeExistingEmptyConstructorsVisible = true;
+                return;
+            }
+            if (string.Compare(attribute.Value, "false", StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                MakeExistingEmptyConstructorsVisible = false;
+                return;
+            }
+            var message = $"Could not convert '{attribute.Value}' to a boolean. Only 'true' or 'false' are allowed.";
+            throw new WeavingException(message);
+        }
+    }
+
     void ReadExcludes()
     {
         var excludeNamespacesAttribute = Config.Attribute("ExcludeNamespaces");

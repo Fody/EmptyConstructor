@@ -1,5 +1,4 @@
-﻿using System;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using Mono.Cecil;
 using NUnit.Framework;
 
@@ -50,6 +49,33 @@ Foo.Bar
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
         Assert.AreEqual(MethodAttributes.Public, moduleWeaver.Visibility);
+    }
+
+    [Test]
+    public void MakeExistingEmptyConstructorsVisible_Default()
+    {
+        var xElement = XElement.Parse("<EmptyConstructor/>");
+        var moduleWeaver = new ModuleWeaver { Config = xElement };
+        moduleWeaver.ReadConfig();
+        Assert.IsFalse(moduleWeaver.MakeExistingEmptyConstructorsVisible);
+    }
+
+    [Test]
+    public void MakeExistingEmptyConstructorsVisible_False()
+    {
+        var xElement = XElement.Parse("<EmptyConstructor MakeExistingEmptyConstructorsVisible='False'/>");
+        var moduleWeaver = new ModuleWeaver { Config = xElement };
+        moduleWeaver.ReadConfig();
+        Assert.IsFalse(moduleWeaver.MakeExistingEmptyConstructorsVisible);
+    }
+
+    [Test]
+    public void MakeExistingEmptyConstructorsVisible_True()
+    {
+        var xElement = XElement.Parse("<EmptyConstructor MakeExistingEmptyConstructorsVisible='True'/>");
+        var moduleWeaver = new ModuleWeaver { Config = xElement };
+        moduleWeaver.ReadConfig();
+        Assert.IsTrue(moduleWeaver.MakeExistingEmptyConstructorsVisible);
     }
 
     [Test]
