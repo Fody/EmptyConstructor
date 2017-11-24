@@ -73,17 +73,6 @@ public class IntegrationTests
     }
 
     [Test]
-    [Explicit]
-    public void ClassWithInitializedFields()
-    {
-        var type = assembly.GetType("ClassWithInitializedFields", true);
-        var instance = (dynamic)Activator.CreateInstance(type);
-        Assert.AreEqual(9, instance.X);
-        Assert.AreEqual("aString", instance.Y);
-        Assert.IsNotNull( instance.Z);
-    }
-
-    [Test]
     public void ClassInheritWithEmptyConstructor()
     {
         var type = assembly.GetType("ClassInheritWithEmptyConstructor", true);
