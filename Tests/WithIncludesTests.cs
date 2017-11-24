@@ -15,10 +15,7 @@ public class WithIncludesTests
 
     public WithIncludesTests()
     {
-        beforeAssemblyPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory,@"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll"));
-#if (!DEBUG)
-        beforeAssemblyPath = beforeAssemblyPath.Replace("Debug", "Release");
-#endif
+        beforeAssemblyPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "AssemblyToProcess.dll");
 
         afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "3.dll");
         File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
@@ -62,13 +59,9 @@ public class WithIncludesTests
         Activator.CreateInstance(type);
     }
 
-
-#if(DEBUG)
     [Test]
     public void PeVerify()
     {
         Verifier.Verify(beforeAssemblyPath,afterAssemblyPath);
     }
-#endif
-
 }

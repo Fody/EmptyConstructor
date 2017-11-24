@@ -39,7 +39,7 @@ public class LineMatcherTest
         Assert.IsTrue(lineMatcher.Match("System"));
         Assert.IsFalse(lineMatcher.Match("NUnit.Framework"));
     }
-    
+
     [Test]
     public void StarStartEnd()
     {

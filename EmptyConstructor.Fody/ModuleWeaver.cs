@@ -70,9 +70,7 @@ public partial class ModuleWeaver
             {
                 continue;
             }
-            MethodReference baseEmptyConstructor;
-            var baseTypeDefinition = baseType as TypeDefinition;
-            if (baseTypeDefinition != null)
+            MethodReference baseEmptyConstructor;            if (baseType is TypeDefinition baseTypeDefinition)
             {
                 if (!processed.TryGetValue(baseTypeDefinition, out baseEmptyConstructor))
                 {

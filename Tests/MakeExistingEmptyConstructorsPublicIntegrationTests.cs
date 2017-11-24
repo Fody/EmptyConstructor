@@ -17,10 +17,7 @@ public class MakeExistingEmptyConstructorsPublicIntegrationTests
 
     public MakeExistingEmptyConstructorsPublicIntegrationTests()
     {
-        beforeAssemblyPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll"));
-#if (!DEBUG)
-        beforeAssemblyPath = beforeAssemblyPath.Replace("Debug", "Release");
-#endif
+        beforeAssemblyPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "AssemblyToProcess.dll");
 
         afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "6.dll");
         File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
@@ -49,7 +46,7 @@ public class MakeExistingEmptyConstructorsPublicIntegrationTests
 
         assembly = Assembly.LoadFile(afterAssemblyPath);
     }
-    
+
     [Test]
     public void ClassWithPrivateEmptyConstructor_MustBeAbleToConstruct()
     {
@@ -89,7 +86,7 @@ public class MakeExistingEmptyConstructorsPublicIntegrationTests
         Assert.IsFalse(constructorInfo.IsFamily);
         Assert.IsTrue(constructorInfo.IsPublic);
     }
-    
+
     [Test]
     public void ClassAbstractWithPrivateEmptyConstructor()
     {
@@ -112,5 +109,11 @@ public class MakeExistingEmptyConstructorsPublicIntegrationTests
 
         Assert.IsTrue(constructorInfo.IsFamily);
         Assert.IsFalse(constructorInfo.IsPublic);
+    }
+
+    [Test]
+    public void PeVerify()
+    {
+        Verifier.Verify(beforeAssemblyPath, afterAssemblyPath);
     }
 }
