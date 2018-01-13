@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Fody;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
-public partial class ModuleWeaver
+public partial class ModuleWeaver:BaseModuleWeaver
 {
-    public Action<string> LogDebug { get; set; }
-    public Action<string> LogWarning { get; set; }
-    public ModuleDefinition ModuleDefinition { get; set; }
-    public IAssemblyResolver AssemblyResolver { get; set; }
     public MethodAttributes Visibility = MethodAttributes.Public;
     public bool MakeExistingEmptyConstructorsVisible;
 
-    public ModuleWeaver()
-    {
-        LogDebug = s => { };
-        LogWarning = s => { };
-    }
-
-    public void Execute()
+    public override void Execute()
     {
         ReadConfig();
         ProcessIncludesExcludes();
@@ -70,7 +61,8 @@ public partial class ModuleWeaver
             {
                 continue;
             }
-            MethodReference baseEmptyConstructor;            if (baseType is TypeDefinition baseTypeDefinition)
+            MethodReference baseEmptyConstructor;
+            if (baseType is TypeDefinition baseTypeDefinition)
             {
                 if (!processed.TryGetValue(baseTypeDefinition, out baseEmptyConstructor))
                 {
@@ -106,8 +98,14 @@ public partial class ModuleWeaver
             {
                 processed.Add(type, null);
             }
-
         }
+    }
+
+    public override bool ShouldCleanReference => true;
+
+    public override IEnumerable<string> GetAssembliesForScanning()
+    {
+        return Enumerable.Empty<string>();
     }
 
     MethodDefinition AddEmptyConstructor(TypeDefinition type)

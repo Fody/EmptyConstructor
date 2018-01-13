@@ -1,11 +1,11 @@
 ﻿using System.Xml.Linq;
+using Fody;
 using Mono.Cecil;
-using NUnit.Framework;
+using Xunit;
 
-[TestFixture]
 public class ConfigReaderTests
 {
-    [Test]
+    [Fact]
     public void ExcludeNamespacesNode()
     {
         var xElement = XElement.Parse(@"
@@ -18,77 +18,77 @@ Foo.Bar
 </EmptyConstructor>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.AreEqual("Foo", moduleWeaver.ExcludeNamespaces[0]);
-        Assert.AreEqual("Bar", moduleWeaver.ExcludeNamespaces[1]);
-        Assert.AreEqual("Foo.Bar", moduleWeaver.ExcludeNamespaces[2]);
+        Assert.Equal("Foo", moduleWeaver.ExcludeNamespaces[0]);
+        Assert.Equal("Bar", moduleWeaver.ExcludeNamespaces[1]);
+        Assert.Equal("Foo.Bar", moduleWeaver.ExcludeNamespaces[2]);
     }
 
-    [Test]
+    [Fact]
     public void VisibilityFamily()
     {
         var xElement = XElement.Parse("<EmptyConstructor Visibility='family'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.AreEqual(MethodAttributes.Family, moduleWeaver.Visibility);
+        Assert.Equal(MethodAttributes.Family, moduleWeaver.Visibility);
     }
 
-    [Test]
+    [Fact]
     public void VisibilityDefault()
     {
         var xElement = XElement.Parse("<EmptyConstructor/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.AreEqual(MethodAttributes.Public, moduleWeaver.Visibility);
+        Assert.Equal(MethodAttributes.Public, moduleWeaver.Visibility);
     }
 
-    [Test]
+    [Fact]
     public void VisibilityPublic()
     {
         var xElement = XElement.Parse("<EmptyConstructor Visibility='public'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.AreEqual(MethodAttributes.Public, moduleWeaver.Visibility);
+        Assert.Equal(MethodAttributes.Public, moduleWeaver.Visibility);
     }
 
-    [Test]
+    [Fact]
     public void MakeExistingEmptyConstructorsVisible_Default()
     {
         var xElement = XElement.Parse("<EmptyConstructor/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.IsFalse(moduleWeaver.MakeExistingEmptyConstructorsVisible);
+        Assert.False(moduleWeaver.MakeExistingEmptyConstructorsVisible);
     }
 
-    [Test]
+    [Fact]
     public void MakeExistingEmptyConstructorsVisible_False()
     {
         var xElement = XElement.Parse("<EmptyConstructor MakeExistingEmptyConstructorsVisible='False'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.IsFalse(moduleWeaver.MakeExistingEmptyConstructorsVisible);
+        Assert.False(moduleWeaver.MakeExistingEmptyConstructorsVisible);
     }
 
-    [Test]
+    [Fact]
     public void MakeExistingEmptyConstructorsVisible_True()
     {
         var xElement = XElement.Parse("<EmptyConstructor MakeExistingEmptyConstructorsVisible='True'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.IsTrue(moduleWeaver.MakeExistingEmptyConstructorsVisible);
+        Assert.True(moduleWeaver.MakeExistingEmptyConstructorsVisible);
     }
 
-    [Test]
+    [Fact]
     public void ExcludeNamespacesAttribute()
     {
         var xElement = XElement.Parse(@"
 <EmptyConstructor ExcludeNamespaces='Foo|Bar'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.AreEqual("Foo", moduleWeaver.ExcludeNamespaces[0]);
-        Assert.AreEqual("Bar", moduleWeaver.ExcludeNamespaces[1]);
+        Assert.Equal("Foo", moduleWeaver.ExcludeNamespaces[0]);
+        Assert.Equal("Bar", moduleWeaver.ExcludeNamespaces[1]);
     }
 
-    [Test]
+    [Fact]
     public void ExcludeNamespacesCombined()
     {
         var xElement = XElement.Parse(@"
@@ -99,11 +99,11 @@ Bar
 </EmptyConstructor>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.AreEqual("Foo", moduleWeaver.ExcludeNamespaces[0]);
-        Assert.AreEqual("Bar", moduleWeaver.ExcludeNamespaces[1]);
+        Assert.Equal("Foo", moduleWeaver.ExcludeNamespaces[0]);
+        Assert.Equal("Bar", moduleWeaver.ExcludeNamespaces[1]);
     }
 
-    [Test]
+    [Fact]
     public void IncludeNamespacesNode()
     {
         var xElement = XElement.Parse(@"
@@ -116,33 +116,33 @@ Foo.Bar
 </EmptyConstructor>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.AreEqual("Foo", moduleWeaver.IncludeNamespaces[0]);
-        Assert.AreEqual("Bar", moduleWeaver.IncludeNamespaces[1]);
-        Assert.AreEqual("Foo.Bar", moduleWeaver.IncludeNamespaces[2]);
+        Assert.Equal("Foo", moduleWeaver.IncludeNamespaces[0]);
+        Assert.Equal("Bar", moduleWeaver.IncludeNamespaces[1]);
+        Assert.Equal("Foo.Bar", moduleWeaver.IncludeNamespaces[2]);
     }
 
-    [Test]
+    [Fact]
     public void IncludeNamespacesAttribute()
     {
         var xElement = XElement.Parse(@"
 <EmptyConstructor IncludeNamespaces='Foo|Bar'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.AreEqual("Foo", moduleWeaver.IncludeNamespaces[0]);
-        Assert.AreEqual("Bar", moduleWeaver.IncludeNamespaces[1]);
+        Assert.Equal("Foo", moduleWeaver.IncludeNamespaces[0]);
+        Assert.Equal("Bar", moduleWeaver.IncludeNamespaces[1]);
     }
 
-    [Test]
+    [Fact]
     public void IncludeAndExcludeNamespacesAttribute()
     {
         var xElement = XElement.Parse(@"
 <EmptyConstructor IncludeNamespaces='Bar' ExcludeNamespaces='Foo'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         var exception = Assert.Throws<WeavingException>(() => moduleWeaver.ReadConfig());
-        Assert.AreEqual("Either configure IncludeNamespaces OR ExcludeNamespaces, not both.",exception.Message);
+        Assert.Equal("Either configure IncludeNamespaces OR ExcludeNamespaces, not both.",exception.Message);
     }
 
-    [Test]
+    [Fact]
     public void IncludeNamespacesCombined()
     {
         var xElement = XElement.Parse(@"
@@ -153,7 +153,7 @@ Bar
 </EmptyConstructor>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.AreEqual("Foo", moduleWeaver.IncludeNamespaces[0]);
-        Assert.AreEqual("Bar", moduleWeaver.IncludeNamespaces[1]);
+        Assert.Equal("Foo", moduleWeaver.IncludeNamespaces[0]);
+        Assert.Equal("Bar", moduleWeaver.IncludeNamespaces[1]);
     }
 }

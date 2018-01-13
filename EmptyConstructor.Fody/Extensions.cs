@@ -3,7 +3,7 @@ using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
-public static class Extensions
+static class Extensions
 {
     public static bool HasEmptyConstructor(this TypeDefinition typeDefinition)
     {
@@ -29,7 +29,6 @@ public static class Extensions
     {
         return !typeDefinition.Methods.Any(x => x.IsConstructor && !x.IsStatic);
     }
-
 
     public static Instruction Clone(this Instruction instruction)
     {
@@ -64,5 +63,4 @@ public static class Extensions
         }
         return typeDefinition.BaseType.FullName == "System.MulticastDelegate";
     }
-
 }

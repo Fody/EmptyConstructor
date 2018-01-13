@@ -1,60 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using Mono.Cecil;
-using NUnit.Framework;
+using Fody;
+using Xunit;
 using MethodAttributes = Mono.Cecil.MethodAttributes;
+#pragma warning disable 618
 
-[TestFixture]
 public class MakeExistingEmptyConstructorsFamilyIntegrationTests
 {
-    Assembly assembly;
-    List<string> warnings = new List<string>();
-    string beforeAssemblyPath;
-    string afterAssemblyPath;
+    static Assembly assembly;
+    static TestResult testResult;
 
-    public MakeExistingEmptyConstructorsFamilyIntegrationTests()
+    static MakeExistingEmptyConstructorsFamilyIntegrationTests()
     {
-        beforeAssemblyPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "AssemblyToProcess.dll");
-
-        afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "5.dll");
-        File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
-
-        var assemblyResolver = new MockAssemblyResolver
+        var weavingTask = new ModuleWeaver
         {
-            Directory = Path.GetDirectoryName(beforeAssemblyPath)
+            Visibility = MethodAttributes.Family,
+            MakeExistingEmptyConstructorsVisible = true
         };
-        using (var moduleDefinition = ModuleDefinition.ReadModule(beforeAssemblyPath, new ReaderParameters
-        {
-            AssemblyResolver = assemblyResolver
-        }))
-        {
-            var weavingTask = new ModuleWeaver
-            {
-                ModuleDefinition = moduleDefinition,
-                AssemblyResolver = assemblyResolver,
-                LogWarning = s => warnings.Add(s),
-                Visibility = MethodAttributes.Family,
-                MakeExistingEmptyConstructorsVisible = true
-            };
-
-            weavingTask.Execute();
-            moduleDefinition.Write(afterAssemblyPath);
-        }
-
-        assembly = Assembly.LoadFile(afterAssemblyPath);
+        testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
+            assemblyName: nameof(MakeExistingEmptyConstructorsFamilyIntegrationTests));
+        assembly = testResult.Assembly;
     }
 
-    [Test]
+    [Fact]
     public void ClassWithPrivateEmptyConstructor_MustNotBeAbleToConstruct()
     {
-        var type = assembly.GetType("ClassWithPrivateConstructor", true);
-        Assert.Throws<MissingMethodException>(() => Activator.CreateInstance(type));
+        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassWithPrivateConstructor"));
     }
 
-    [Test]
+    [Fact]
     public void ClassWithPrivateEmptyConstructor_MustHaveCorrectAccessModifier()
     {
         var type = assembly.GetType("ClassWithPrivateConstructor", true);
@@ -62,19 +37,18 @@ public class MakeExistingEmptyConstructorsFamilyIntegrationTests
             .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
             .Single(x => x.GetParameters().Length == 0);
 
-        Assert.IsFalse(constructorInfo.IsPrivate);
-        Assert.IsTrue(constructorInfo.IsFamily);
-        Assert.IsFalse(constructorInfo.IsPublic);
+        Assert.False(constructorInfo.IsPrivate);
+        Assert.True(constructorInfo.IsFamily);
+        Assert.False(constructorInfo.IsPublic);
     }
 
-    [Test]
+    [Fact]
     public void ClassWithProtectedEmptyConstructor_MustNotBeAbleToConstruct()
     {
-        var type = assembly.GetType("ClassWithProtectedConstructor", true);
-        Assert.Throws<MissingMethodException>(() => Activator.CreateInstance(type));
+        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassWithProtectedConstructor"));
     }
 
-    [Test]
+    [Fact]
     public void ClassWithProtectedEmptyConstructor_MustHaveCorrectAccessModifier()
     {
         var type = assembly.GetType("ClassWithProtectedConstructor", true);
@@ -82,12 +56,12 @@ public class MakeExistingEmptyConstructorsFamilyIntegrationTests
             .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
             .Single(x => x.GetParameters().Length == 0);
 
-        Assert.IsFalse(constructorInfo.IsPrivate);
-        Assert.IsTrue(constructorInfo.IsFamily);
-        Assert.IsFalse(constructorInfo.IsPublic);
+        Assert.False(constructorInfo.IsPrivate);
+        Assert.True(constructorInfo.IsFamily);
+        Assert.False(constructorInfo.IsPublic);
     }
 
-    [Test]
+    [Fact]
     public void ClassAbstractWithPrivateEmptyConstructor()
     {
         var type = assembly.GetType("ClassAbstractWithPrivateConstructor", true);
@@ -95,11 +69,11 @@ public class MakeExistingEmptyConstructorsFamilyIntegrationTests
             .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
             .Single(x => x.GetParameters().Length == 0);
 
-        Assert.IsFalse(constructorInfo.IsFamily);
-        Assert.IsFalse(constructorInfo.IsPublic);
+        Assert.False(constructorInfo.IsFamily);
+        Assert.False(constructorInfo.IsPublic);
     }
 
-    [Test]
+    [Fact]
     public void ClassAbstractWithProtectedEmptyConstructor()
     {
         var type = assembly.GetType("ClassAbstractWithProtectedConstructor", true);
@@ -107,13 +81,7 @@ public class MakeExistingEmptyConstructorsFamilyIntegrationTests
             .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
             .Single(x => x.GetParameters().Length == 0);
 
-        Assert.IsTrue(constructorInfo.IsFamily);
-        Assert.IsFalse(constructorInfo.IsPublic);
-    }
-
-    [Test]
-    public void PeVerify()
-    {
-        Verifier.Verify(beforeAssemblyPath, afterAssemblyPath);
+        Assert.True(constructorInfo.IsFamily);
+        Assert.False(constructorInfo.IsPublic);
     }
 }

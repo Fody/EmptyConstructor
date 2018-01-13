@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
+using Fody;
 using Mono.Cecil;
 
 public partial class ModuleWeaver
 {
-    public XElement Config { get; set; }
     public List<string> IncludeNamespaces = new List<string>();
     public List<string> ExcludeNamespaces = new List<string>();
 

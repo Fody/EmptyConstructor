@@ -1,66 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using Mono.Cecil;
-using NUnit.Framework;
+using Fody;
+using Xunit;
+#pragma warning disable 618
 
-[TestFixture]
 public class WithExcludesTests
 {
-    Assembly assembly;
-    List<string> warnings = new List<string>();
-    string beforeAssemblyPath;
-    string afterAssemblyPath;
+    static Assembly assembly;
+    static TestResult testResult;
 
-    public WithExcludesTests()
+    static WithExcludesTests()
     {
-        beforeAssemblyPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "AssemblyToProcess.dll");
-
-        afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "4.dll");
-        File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
-
-        var assemblyResolver = new MockAssemblyResolver
-            {
-                Directory = Path.GetDirectoryName(beforeAssemblyPath)
-            };
-        using (var moduleDefinition = ModuleDefinition.ReadModule(beforeAssemblyPath, new ReaderParameters
+        var weavingTask = new ModuleWeaver
         {
-            AssemblyResolver = assemblyResolver
-        }))
-        {
-            var weavingTask = new ModuleWeaver
-            {
-                ModuleDefinition = moduleDefinition,
-                AssemblyResolver = assemblyResolver,
-                ExcludeNamespaces = new List<string>{"MyNameSpace"},
-                LogWarning =s => warnings.Add(s)
-            };
-
-            weavingTask.Execute();
-            moduleDefinition.Write(afterAssemblyPath);
-        }
-
-        assembly = Assembly.LoadFile(afterAssemblyPath);
+            ExcludeNamespaces = new List<string> { "MyNameSpace" },
+        };
+        testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
+            assemblyName: nameof(WithExcludesTests));
+        assembly = testResult.Assembly;
     }
 
-    [Test]
+    [Fact]
     public void ClassInheritWithNonEmptyConstructor()
     {
-        var type = assembly.GetType("ClassInheritWithNonEmptyConstructor", true);
-        Activator.CreateInstance(type);
+        testResult.GetInstance("ClassInheritWithNonEmptyConstructor");
     }
 
-    [Test]
+    [Fact]
     public void ClassInheritWithNonEmptyConstructorInNamespace()
     {
         var type = assembly.GetType("MyNameSpace.ClassWithNoEmptyConstructorInNamespace", true);
-        Assert.AreEqual(1, type.GetConstructors().Length);
-    }
-
-    [Test]
-    public void PeVerify()
-    {
-        Verifier.Verify(beforeAssemblyPath,afterAssemblyPath);
+        Assert.Single(type.GetConstructors());
     }
 }

@@ -1,135 +1,98 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using Mono.Cecil;
-using NUnit.Framework;
+using Fody;
+using Xunit;
+#pragma warning disable 618
 
-[TestFixture]
 public class IntegrationTests
 {
-    Assembly assembly;
-    List<string> warnings = new List<string>();
-    string beforeAssemblyPath;
-    string afterAssemblyPath;
+    static Assembly assembly;
+    static TestResult testResult;
 
-    public IntegrationTests()
+    static IntegrationTests()
     {
-        beforeAssemblyPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "AssemblyToProcess.dll");
-
-        afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "2.dll");
-        File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
-
-        var assemblyResolver = new MockAssemblyResolver
-        {
-            Directory = Path.GetDirectoryName(beforeAssemblyPath)
-        };
-        using (var moduleDefinition = ModuleDefinition.ReadModule(beforeAssemblyPath, new ReaderParameters
-        {
-            AssemblyResolver = assemblyResolver
-        }))
-        {
-            var weavingTask = new ModuleWeaver
-            {
-                ModuleDefinition = moduleDefinition,
-                AssemblyResolver = assemblyResolver,
-                LogWarning = s => warnings.Add(s)
-            };
-
-            weavingTask.Execute();
-            moduleDefinition.Write(afterAssemblyPath);
-        }
-
-        assembly = Assembly.LoadFile(afterAssemblyPath);
+        var weavingTask = new ModuleWeaver();
+        testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
+            assemblyName: nameof(IntegrationTests));
+        assembly = testResult.Assembly;
     }
 
-    [Test]
+    [Fact]
     public void ClassInheritWithBothConstructors()
     {
-        var type = assembly.GetType("ClassInheritWithBothConstructors", true);
-        Activator.CreateInstance(type);
+       testResult.GetInstance("ClassInheritWithBothConstructors");
     }
 
-    [Test]
+    [Fact]
     public void ClassInheritWithEmptyConstructorFromOtherAssembly()
     {
-        var type = assembly.GetType("ClassInheritWithEmptyConstructorFromOtherAssembly", true);
-        Activator.CreateInstance(type);
+        testResult.GetInstance("ClassInheritWithEmptyConstructorFromOtherAssembly");
     }
 
-    [Test]
+    [Fact]
     public void ClassInheritAbstractWithEmptyConstructor()
     {
-        var type = assembly.GetType("ClassInheritAbstractWithEmptyConstructor", true);
-        Activator.CreateInstance(type);
+        testResult.GetInstance("ClassInheritAbstractWithEmptyConstructor");
     }
 
-    [Test]
+    [Fact]
     public void ClassInheritWithNullableParam()
     {
-        var type = assembly.GetType("ClassInheritWithNullableParam", true);
-        Activator.CreateInstance(type);
+        testResult.GetInstance("ClassInheritWithNullableParam");
     }
 
-    [Test]
+    [Fact]
     public void ClassInheritWithEmptyConstructor()
     {
-        var type = assembly.GetType("ClassInheritWithEmptyConstructor", true);
-        Activator.CreateInstance(type);
+        testResult.GetInstance("ClassInheritWithEmptyConstructor");
     }
 
-    [Test]
+    [Fact]
     public void ClassInheritWithNonEmptyConstructor()
     {
-        var type = assembly.GetType("ClassInheritWithNonEmptyConstructor", true);
-        Activator.CreateInstance(type);
+        testResult.GetInstance("ClassInheritWithNonEmptyConstructor");
     }
 
-    [Test]
+    [Fact]
     public void ClassWithBothConstructors()
     {
-        var type = assembly.GetType("ClassWithBothConstructors", true);
-        Activator.CreateInstance(type);
+        testResult.GetInstance("ClassWithBothConstructors");
     }
 
-    [Test]
+    [Fact]
     public void ClassWithDefaultSingleParamConstructor()
     {
         var type = assembly.GetType("ClassWithDefaultSingleParamConstructor", true);
-        Assert.AreEqual(2,type.GetConstructors().Length);
+        Assert.Equal(2,type.GetConstructors().Length);
         Activator.CreateInstance(type,"aString");
     }
 
-    [Test]
+    [Fact]
     public void ClassWithEmptyConstructor()
     {
-        var type = assembly.GetType("ClassWithEmptyConstructor", true);
-        Activator.CreateInstance(type);
+        testResult.GetInstance("ClassWithEmptyConstructor");
     }
 
-    [Test]
+    [Fact]
     public void ClassWithNoEmptyConstructor()
     {
-        var type = assembly.GetType("ClassWithNoEmptyConstructor", true);
-        Activator.CreateInstance(type);
+        testResult.GetInstance("ClassWithNoEmptyConstructor");
     }
 
-    [Test]
+    [Fact]
     public void ClassWithPrivateEmptyConstructor()
     {
-        var type = assembly.GetType("ClassWithPrivateConstructor", true);
-        Assert.Throws<MissingMethodException>(() => Activator.CreateInstance(type));
+        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassWithPrivateConstructor"));
     }
 
-    [Test]
+    [Fact]
     public void ClassWithProtectedEmptyConstructor()
     {
-        var type = assembly.GetType("ClassWithProtectedConstructor", true);
-        Assert.Throws<MissingMethodException>(() => Activator.CreateInstance(type));
+        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassWithProtectedConstructor"));
     }
 
-    [Test]
+    [Fact]
     public void ClassAbstractWithPrivateEmptyConstructor()
     {
         var type = assembly.GetType("ClassAbstractWithPrivateConstructor", true);
@@ -137,11 +100,11 @@ public class IntegrationTests
             .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
             .Single(x => x.GetParameters().Length == 0);
 
-        Assert.IsFalse(constructorInfo.IsPublic);
-        Assert.IsFalse(constructorInfo.IsFamily);
+        Assert.False(constructorInfo.IsPublic);
+        Assert.False(constructorInfo.IsFamily);
     }
 
-    [Test]
+    [Fact]
     public void ClassAbstractWithProtectedEmptyConstructor()
     {
         var type = assembly.GetType("ClassAbstractWithProtectedConstructor", true);
@@ -149,13 +112,7 @@ public class IntegrationTests
             .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
             .Single(x => x.GetParameters().Length == 0);
 
-        Assert.IsTrue(constructorInfo.IsFamily);
-        Assert.IsFalse(constructorInfo.IsPublic);
-    }
-
-    [Test]
-    public void PeVerify()
-    {
-        Verifier.Verify(beforeAssemblyPath,afterAssemblyPath);
+        Assert.True(constructorInfo.IsFamily);
+        Assert.False(constructorInfo.IsPublic);
     }
 }
