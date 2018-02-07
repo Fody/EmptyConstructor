@@ -37,7 +37,6 @@ public partial class ModuleWeaver
 
     public static LineMatcher BuildLineMatcher(string line)
     {
-
         var starStart = false;
         if (line.StartsWith("*"))
         {
