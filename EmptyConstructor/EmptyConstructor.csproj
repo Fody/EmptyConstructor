@@ -9,7 +9,7 @@
     <PackageTags>Empty Constructor, ILWeaving, Fody, Cecil</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Fody" Version="2.3.25" PrivateAssets="" Exclude="" />
-    <PackageReference Include="FodyPackaging" Version="2.3.25" PrivateAssets="All" />
+    <PackageReference Include="Fody" Version="3.0.0" PrivateAssets="" Exclude="" />
+    <PackageReference Include="FodyPackaging" Version="3.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>
