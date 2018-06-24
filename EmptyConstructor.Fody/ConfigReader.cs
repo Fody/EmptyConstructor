@@ -30,45 +30,49 @@ public partial class ModuleWeaver
     void ReadVisibility()
     {
         var visibilityAttribute = Config.Attribute("Visibility");
-        if (visibilityAttribute != null)
+        if (visibilityAttribute == null)
         {
-            if (visibilityAttribute.Value == "public")
-            {
-                Visibility = MethodAttributes.Public;
-                return;
-            }
-
-            if (visibilityAttribute.Value == "family")
-            {
-                Visibility = MethodAttributes.Family;
-                return;
-            }
-
-            var message = $"Could not convert '{visibilityAttribute.Value}' to a visibility. Only 'public' or 'family' are allowed.";
-            throw new WeavingException(message);
+            return;
         }
+
+        if (visibilityAttribute.Value == "public")
+        {
+            Visibility = MethodAttributes.Public;
+            return;
+        }
+
+        if (visibilityAttribute.Value == "family")
+        {
+            Visibility = MethodAttributes.Family;
+            return;
+        }
+
+        var message = $"Could not convert '{visibilityAttribute.Value}' to a visibility. Only 'public' or 'family' are allowed.";
+        throw new WeavingException(message);
     }
 
     void ReadMakeExistingEmptyConstructorsVisible()
     {
         var attribute = Config.Attribute("MakeExistingEmptyConstructorsVisible");
-        if (attribute != null)
+        if (attribute == null)
         {
-            if (string.Compare(attribute.Value, "true", StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                MakeExistingEmptyConstructorsVisible = true;
-                return;
-            }
-
-            if (string.Compare(attribute.Value, "false", StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                MakeExistingEmptyConstructorsVisible = false;
-                return;
-            }
-
-            var message = $"Could not convert '{attribute.Value}' to a boolean. Only 'true' or 'false' are allowed.";
-            throw new WeavingException(message);
+            return;
         }
+
+        if (string.Compare(attribute.Value, "true", StringComparison.OrdinalIgnoreCase) == 0)
+        {
+            MakeExistingEmptyConstructorsVisible = true;
+            return;
+        }
+
+        if (string.Compare(attribute.Value, "false", StringComparison.OrdinalIgnoreCase) == 0)
+        {
+            MakeExistingEmptyConstructorsVisible = false;
+            return;
+        }
+
+        var message = $"Could not convert '{attribute.Value}' to a boolean. Only 'true' or 'false' are allowed.";
+        throw new WeavingException(message);
     }
 
     void ReadExcludes()
@@ -83,18 +87,20 @@ public partial class ModuleWeaver
         }
 
         var excludeNamespacesElement = Config.Element("ExcludeNamespaces");
-        if (excludeNamespacesElement != null)
+        if (excludeNamespacesElement == null)
         {
-            foreach (var item in excludeNamespacesElement.Value
-                .Split(new[]
-                {
-                    "\r\n",
-                    "\n"
-                }, StringSplitOptions.RemoveEmptyEntries)
-                .NonEmpty())
+            return;
+        }
+
+        foreach (var item in excludeNamespacesElement.Value
+            .Split(new[]
             {
-                ExcludeNamespaces.Add(item);
-            }
+                "\r\n",
+                "\n"
+            }, StringSplitOptions.RemoveEmptyEntries)
+            .NonEmpty())
+        {
+            ExcludeNamespaces.Add(item);
         }
     }
 
@@ -110,18 +116,20 @@ public partial class ModuleWeaver
         }
 
         var includeNamespacesElement = Config.Element("IncludeNamespaces");
-        if (includeNamespacesElement != null)
+        if (includeNamespacesElement == null)
         {
-            foreach (var item in includeNamespacesElement.Value
-                .Split(new[]
-                {
-                    "\r\n",
-                    "\n"
-                }, StringSplitOptions.RemoveEmptyEntries)
-                .NonEmpty())
+            return;
+        }
+
+        foreach (var item in includeNamespacesElement.Value
+            .Split(new[]
             {
-                IncludeNamespaces.Add(item);
-            }
+                "\r\n",
+                "\n"
+            }, StringSplitOptions.RemoveEmptyEntries)
+            .NonEmpty())
+        {
+            IncludeNamespaces.Add(item);
         }
     }
 }

@@ -112,9 +112,9 @@ public partial class ModuleWeaver:BaseModuleWeaver
     {
         LogDebug("Processing " + type.FullName);
         var methodAttributes = Visibility | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
-        var method = new MethodDefinition(".ctor", methodAttributes, ModuleDefinition.TypeSystem.Void);
+        var method = new MethodDefinition(".ctor", methodAttributes, TypeSystem.VoidReference);
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Ldarg_0));
-        var methodReference = new MethodReference(".ctor",ModuleDefinition.TypeSystem.Void,type.BaseType){HasThis = true};
+        var methodReference = new MethodReference(".ctor", TypeSystem.VoidReference, type.BaseType){HasThis = true};
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Call, methodReference));
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
         type.Methods.Add(method);
