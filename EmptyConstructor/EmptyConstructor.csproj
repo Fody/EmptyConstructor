@@ -7,10 +7,9 @@
     <Authors>Simon Cropp</Authors>
     <Description>Injects an empty constructor into classes.</Description>
     <PackageTags>Empty Constructor, ILWeaving, Fody, Cecil</PackageTags>
-    <NoWarn>NU5118</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Fody" Version="3.1.6" PrivateAssets="None" />
-    <PackageReference Include="FodyPackaging" Version="3.1.6" PrivateAssets="All" />
+    <PackageReference Include="Fody" Version="3.1.7" PrivateAssets="None" />
+    <PackageReference Include="FodyPackaging" Version="3.1.7" PrivateAssets="All" />
   </ItemGroup>
 </Project>
