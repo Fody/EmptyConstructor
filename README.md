@@ -20,12 +20,12 @@ See also [Fody usage](https://github.com/Fody/Fody#usage).
 
 Install the [EmptyConstructor.Fody NuGet package](https://nuget.org/packages/EmptyConstructor.Fody/) and update the [Fody NuGet package](https://nuget.org/packages/Fody/):
 
-```
+```powershell
+PM> Install-Package Fody
 PM> Install-Package EmptyConstructor.Fody
-PM> Update-Package Fody
 ```
 
-The `Update-Package Fody` is required since NuGet always defaults to the oldest, and most buggy, version of any dependency.
+The `Install-Package Fody` is required since NuGet always defaults to the oldest, and most buggy, version of any dependency.
 
 
 ### Add to FodyWeavers.xml
@@ -49,7 +49,7 @@ If for some reason you want to skip a specific class you can mark it with a `DoN
 
 Since no reference assembly is shipped with Virtuosity. Just add the below class to your assembly. Namespace does not matter.
 
-```
+```csharp
 public class DoNotVirtualizeAttribute : Attribute
 {
 }
@@ -57,7 +57,7 @@ public class DoNotVirtualizeAttribute : Attribute
 
 So your class will look like this
 
-```
+```csharp
 [DoNotVirtualize]
 public class ClassToSkip
 {
@@ -83,7 +83,7 @@ Defaults to `public`.
 
 For example
 
-```
+```xml
 <EmptyConstructor Visibility='family'/>
 ```
 
@@ -95,7 +95,7 @@ If this feature is enabled, the visibility of empty-constructors of non-abstract
 
 For example
 
-```
+```xml
 <EmptyConstructor MakeExistingEmptyConstructorsVisible='True'/>
 ```
 
@@ -123,7 +123,7 @@ As an element with items delimited by a newline.
 
 Or as a attribute with items delimited by a pipe `|`.
 
-```
+```xml
 <EmptyConstructor ExcludeNamespaces='Foo|Bar'/>
 ```
 
@@ -149,7 +149,7 @@ As an element with items delimited by a newline.
 
 Or as a attribute with items delimited by a pipe `|`.
 
-```
+```xml
 <EmptyConstructor IncludeNamespaces='Foo|Bar'/>
 ```
 
