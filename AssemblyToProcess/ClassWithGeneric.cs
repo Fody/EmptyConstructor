@@ -19,7 +19,6 @@ public class ClassWithGenericInheritWithGeneric<T> : ClassWithGeneric<T>
     protected ClassWithGenericInheritWithGeneric(T x)
     : base(x)
     {
-
     }
 }
 
