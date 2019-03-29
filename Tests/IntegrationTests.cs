@@ -115,4 +115,28 @@ public class IntegrationTests
         Assert.True(constructorInfo.IsFamily);
         Assert.False(constructorInfo.IsPublic);
     }
+
+    [Fact]
+    public void ClassWithGeneric()
+    {
+        testResult.GetGenericInstance("ClassWithGeneric`1", typeof(string));
+    }
+
+    [Fact]
+    public void ClassInheritWithGeneric()
+    {
+        testResult.GetInstance("ClassInheritWithGeneric");
+    }
+
+    [Fact]
+    public void ClassWithGenericInheritWithGeneric()
+    {
+        testResult.GetGenericInstance("ClassWithGenericInheritWithGeneric`1", typeof(object));
+    }
+
+    [Fact]
+    public void ClassInheritWithGenericInheritWithGeneric()
+    {
+        testResult.GetInstance("ClassInheritWithGenericInheritWithGeneric");
+    }
 }
