@@ -1,0 +1,3 @@
+public class ClassInheritGenericWithEmptyConstructorFromOtherAssembly : AssemblyToReference.GenericClassWithEmptyConstructor<string>
+{
+}

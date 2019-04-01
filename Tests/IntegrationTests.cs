@@ -31,6 +31,24 @@ public class IntegrationTests
     }
 
     [Fact]
+    public void ClassInheritGenericWithEmptyConstructorFromOtherAssembly()
+    {
+        testResult.GetInstance("ClassInheritGenericWithEmptyConstructorFromOtherAssembly");
+    }
+
+    [Fact]
+    public void ClassInheritWithNonEmptyConstructorFromOtherAssembly()
+    {
+        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassInheritWithNonEmptyConstructorFromOtherAssembly"));
+    }
+
+    [Fact]
+    public void ClassInheritGenericWithNonEmptyConstructorFromOtherAssembly()
+    {
+        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassInheritGenericWithNonEmptyConstructorFromOtherAssembly"));
+    }
+
+    [Fact]
     public void ClassInheritAbstractWithEmptyConstructor()
     {
         testResult.GetInstance("ClassInheritAbstractWithEmptyConstructor");
