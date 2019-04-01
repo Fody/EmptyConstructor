@@ -71,7 +71,7 @@ public partial class ModuleWeaver:BaseModuleWeaver
             {
                 if (!external.TryGetValue(baseType, out baseEmptyConstructor))
                 {
-                    var emptyConstructor = baseType.Resolve().GetEmptyConstructor();
+                    var emptyConstructor = baseTypeDefinition.GetEmptyConstructor();
                     if (emptyConstructor != null)
                     {
                         baseEmptyConstructor = ModuleDefinition.ImportReference(emptyConstructor);
