@@ -139,4 +139,16 @@ public class IntegrationTests
     {
         testResult.GetInstance("ClassInheritWithGenericInheritWithGeneric");
     }
+
+    [Fact]
+    public void ClassWithGenericInReverseDeclarationOrder()
+    {
+        testResult.GetGenericInstance("ClassWithGenericInReverseDeclarationOrder`1", typeof(object));
+    }
+
+    [Fact]
+    public void ClassInheritWithGenericInReverseDeclarationOrder()
+    {
+        testResult.GetInstance("ClassInheritWithGenericInReverseDeclarationOrder");
+    }
 }
