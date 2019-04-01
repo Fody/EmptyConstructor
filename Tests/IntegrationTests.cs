@@ -21,7 +21,7 @@ public class IntegrationTests
     [Fact]
     public void ClassInheritWithBothConstructors()
     {
-       testResult.GetInstance("ClassInheritWithBothConstructors");
+        testResult.GetInstance("ClassInheritWithBothConstructors");
     }
 
     [Fact]
@@ -64,8 +64,8 @@ public class IntegrationTests
     public void ClassWithDefaultSingleParamConstructor()
     {
         var type = assembly.GetType("ClassWithDefaultSingleParamConstructor", true);
-        Assert.Equal(2,type.GetConstructors().Length);
-        Activator.CreateInstance(type,"aString");
+        Assert.Equal(2, type.GetConstructors().Length);
+        Activator.CreateInstance(type, "aString");
     }
 
     [Fact]
