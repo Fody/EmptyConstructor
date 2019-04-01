@@ -82,7 +82,7 @@ public partial class ModuleWeaver:BaseModuleWeaver
                 if (baseEmptyConstructor == null)
                 {
                     processed.Add(type, null);
-                    LogDebug($"COuld not inject empty constructor in {type.FullName} because base class does not have a parameterless constructor and is from an external assembly");
+                    LogDebug($"Could not inject empty constructor in {type.FullName} because base class does not have a parameterless constructor and is from an external assembly");
                     continue;
                 }
             }
