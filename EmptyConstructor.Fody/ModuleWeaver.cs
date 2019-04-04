@@ -13,7 +13,10 @@ public partial class ModuleWeaver:BaseModuleWeaver
     {
         ReadConfig();
         ProcessIncludesExcludes();
-        var queue = new Queue<TypeDefinition>(ModuleDefinition.GetTypes());
+
+
+        var internalTypes = ModuleDefinition.GetTypes().ToList();
+        var queue = new Queue<TypeDefinition>(internalTypes);
 
         var processed = new Dictionary<TypeDefinition, MethodReference>();
         var external = new Dictionary<TypeReference, MethodReference>();
@@ -61,8 +64,29 @@ public partial class ModuleWeaver:BaseModuleWeaver
             {
                 continue;
             }
+
             MethodReference baseEmptyConstructor;
-            if (baseType is TypeDefinition baseTypeDefinition)
+            var baseTypeDefinition = baseType.Resolve();
+            if (!internalTypes.Contains(baseTypeDefinition))
+            {
+                if (!external.TryGetValue(baseType, out baseEmptyConstructor))
+                {
+                    var emptyConstructor = baseTypeDefinition.GetEmptyConstructor();
+                    if (emptyConstructor != null)
+                    {
+                        baseEmptyConstructor = ModuleDefinition.ImportReference(emptyConstructor);
+                    }
+                    external.Add(baseType, baseEmptyConstructor);
+                }
+
+                if (baseEmptyConstructor == null)
+                {
+                    processed.Add(type, null);
+                    LogDebug($"Could not inject empty constructor in {type.FullName} because base class does not have a parameterless constructor and is from an external assembly");
+                    continue;
+                }
+            }
+            else
             {
                 if (!processed.TryGetValue(baseTypeDefinition, out baseEmptyConstructor))
                 {
@@ -70,33 +94,15 @@ public partial class ModuleWeaver:BaseModuleWeaver
                     continue;
                 }
             }
-            else
-            {
-                if (!external.TryGetValue(baseType, out baseEmptyConstructor))
-                {
-                    var emptyConstructor = baseType.Resolve().GetEmptyConstructor();
-                    if (emptyConstructor != null)
-                    {
-                        baseEmptyConstructor = ModuleDefinition.ImportReference(emptyConstructor);
-                    }
-                    external.Add(baseType, baseEmptyConstructor);
-                }
-            }
 
-            if (baseEmptyConstructor != null)
-            {
-                if (baseEmptyConstructor.Resolve().IsPrivate)
-                {
-                    processed.Add(type, null);
-                    LogWarning($"Could not inject empty constructor in {type.FullName} because the base class has a private parameterless constructor");
-                    continue;
-                }
-                var constructor = AddEmptyConstructor(type);
-                processed.Add(type, constructor);
-            }
-            else
+            if (baseEmptyConstructor.Resolve().IsPrivate)
             {
                 processed.Add(type, null);
+                LogWarning($"Could not inject empty constructor in {type.FullName} because the base class has a private parameterless constructor");
+            }
+            else
+            {
+                processed.Add(type, AddEmptyConstructor(type));
             }
         }
     }

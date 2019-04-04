@@ -21,13 +21,31 @@ public class IntegrationTests
     [Fact]
     public void ClassInheritWithBothConstructors()
     {
-       testResult.GetInstance("ClassInheritWithBothConstructors");
+        testResult.GetInstance("ClassInheritWithBothConstructors");
     }
 
     [Fact]
     public void ClassInheritWithEmptyConstructorFromOtherAssembly()
     {
         testResult.GetInstance("ClassInheritWithEmptyConstructorFromOtherAssembly");
+    }
+
+    [Fact]
+    public void ClassInheritGenericWithEmptyConstructorFromOtherAssembly()
+    {
+        testResult.GetInstance("ClassInheritGenericWithEmptyConstructorFromOtherAssembly");
+    }
+
+    [Fact]
+    public void ClassInheritWithNonEmptyConstructorFromOtherAssembly()
+    {
+        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassInheritWithNonEmptyConstructorFromOtherAssembly"));
+    }
+
+    [Fact]
+    public void ClassInheritGenericWithNonEmptyConstructorFromOtherAssembly()
+    {
+        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassInheritGenericWithNonEmptyConstructorFromOtherAssembly"));
     }
 
     [Fact]
@@ -64,8 +82,8 @@ public class IntegrationTests
     public void ClassWithDefaultSingleParamConstructor()
     {
         var type = assembly.GetType("ClassWithDefaultSingleParamConstructor", true);
-        Assert.Equal(2,type.GetConstructors().Length);
-        Activator.CreateInstance(type,"aString");
+        Assert.Equal(2, type.GetConstructors().Length);
+        Activator.CreateInstance(type, "aString");
     }
 
     [Fact]
@@ -138,5 +156,17 @@ public class IntegrationTests
     public void ClassInheritWithGenericInheritWithGeneric()
     {
         testResult.GetInstance("ClassInheritWithGenericInheritWithGeneric");
+    }
+
+    [Fact]
+    public void ClassWithGenericInReverseDeclarationOrder()
+    {
+        testResult.GetGenericInstance("ClassWithGenericInReverseDeclarationOrder`1", typeof(object));
+    }
+
+    [Fact]
+    public void ClassInheritWithGenericInReverseDeclarationOrder()
+    {
+        testResult.GetInstance("ClassInheritWithGenericInReverseDeclarationOrder");
     }
 }
