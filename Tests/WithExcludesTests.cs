@@ -2,9 +2,10 @@
 using System.Reflection;
 using Fody;
 using Xunit;
-#pragma warning disable 618
+using Xunit.Abstractions;
 
-public class WithExcludesTests
+public class WithExcludesTests :
+    XunitLoggingBase
 {
     static Assembly assembly;
     static TestResult testResult;
@@ -31,5 +32,10 @@ public class WithExcludesTests
     {
         var type = assembly.GetType("MyNameSpace.ClassWithNoEmptyConstructorInNamespace", true);
         Assert.Single(type.GetConstructors());
+    }
+
+    public WithExcludesTests(ITestOutputHelper output) :
+        base(output)
+    {
     }
 }

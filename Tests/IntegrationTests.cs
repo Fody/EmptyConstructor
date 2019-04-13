@@ -3,9 +3,10 @@ using System.Linq;
 using System.Reflection;
 using Fody;
 using Xunit;
-#pragma warning disable 618
+using Xunit.Abstractions;
 
-public class IntegrationTests
+public class IntegrationTests :
+    XunitLoggingBase
 {
     static Assembly assembly;
     static TestResult testResult;
@@ -168,5 +169,10 @@ public class IntegrationTests
     public void ClassInheritWithGenericInReverseDeclarationOrder()
     {
         testResult.GetInstance("ClassInheritWithGenericInReverseDeclarationOrder");
+    }
+
+    public IntegrationTests(ITestOutputHelper output) : 
+        base(output)
+    {
     }
 }

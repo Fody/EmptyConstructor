@@ -2,10 +2,11 @@
 using System.Reflection;
 using Fody;
 using Xunit;
+using Xunit.Abstractions;
 using MethodAttributes = Mono.Cecil.MethodAttributes;
-#pragma warning disable 618
 
-public class MakeExistingEmptyConstructorsPublicIntegrationTests
+public class MakeExistingEmptyConstructorsPublicIntegrationTests :
+    XunitLoggingBase
 {
     static Assembly assembly;
     static TestResult testResult;
@@ -82,5 +83,10 @@ public class MakeExistingEmptyConstructorsPublicIntegrationTests
 
         Assert.True(constructorInfo.IsFamily);
         Assert.False(constructorInfo.IsPublic);
+    }
+
+    public MakeExistingEmptyConstructorsPublicIntegrationTests(ITestOutputHelper output) :
+        base(output)
+    {
     }
 }

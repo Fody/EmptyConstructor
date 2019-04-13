@@ -2,9 +2,10 @@
 using System.Reflection;
 using Fody;
 using Xunit;
-#pragma warning disable 618
+using Xunit.Abstractions;
 
-public class WithIncludesTests
+public class WithIncludesTests :
+    XunitLoggingBase
 {
     static Assembly assembly;
     static TestResult testResult;
@@ -34,5 +35,10 @@ public class WithIncludesTests
     public void ClassInheritWithNonEmptyConstructorInNamespace()
     {
         testResult.GetInstance("MyNameSpace.ClassWithNoEmptyConstructorInNamespace");
+    }
+
+    public WithIncludesTests(ITestOutputHelper output) :
+        base(output)
+    {
     }
 }
