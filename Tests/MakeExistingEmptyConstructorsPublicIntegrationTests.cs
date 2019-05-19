@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using Fody;
 using Xunit;
 using Xunit.Abstractions;
@@ -32,14 +31,10 @@ public class MakeExistingEmptyConstructorsPublicIntegrationTests :
     [Fact]
     public void ClassWithPrivateEmptyConstructor_MustHaveCorrectAccessModifier()
     {
-        var type = assembly.GetType("ClassWithPrivateConstructor", true);
-        var constructorInfo = type
-            .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-            .Single(x => x.GetParameters().Length == 0);
-
-        Assert.False(constructorInfo.IsPrivate);
-        Assert.False(constructorInfo.IsFamily);
-        Assert.True(constructorInfo.IsPublic);
+        var constructor = assembly.GetConstructor("ClassWithPrivateConstructor");
+        Assert.False(constructor.IsPrivate);
+        Assert.False(constructor.IsFamily);
+        Assert.True(constructor.IsPublic);
     }
 
     [Fact]
@@ -51,38 +46,26 @@ public class MakeExistingEmptyConstructorsPublicIntegrationTests :
     [Fact]
     public void ClassWithProtectedEmptyConstructor_MustHaveCorrectAccessModifier()
     {
-        var type = assembly.GetType("ClassWithProtectedConstructor", true);
-        var constructorInfo = type
-            .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-            .Single(x => x.GetParameters().Length == 0);
-
-        Assert.False(constructorInfo.IsPrivate);
-        Assert.False(constructorInfo.IsFamily);
-        Assert.True(constructorInfo.IsPublic);
+        var constructor = assembly.GetConstructor("ClassWithProtectedConstructor");
+        Assert.False(constructor.IsPrivate);
+        Assert.False(constructor.IsFamily);
+        Assert.True(constructor.IsPublic);
     }
 
     [Fact]
     public void ClassAbstractWithPrivateEmptyConstructor()
     {
-        var type = assembly.GetType("ClassAbstractWithPrivateConstructor", true);
-        var constructorInfo = type
-            .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-            .Single(x => x.GetParameters().Length == 0);
-
-        Assert.False(constructorInfo.IsFamily);
-        Assert.False(constructorInfo.IsPublic);
+        var constructor = assembly.GetConstructor("ClassAbstractWithPrivateConstructor");
+        Assert.False(constructor.IsFamily);
+        Assert.False(constructor.IsPublic);
     }
 
     [Fact]
     public void ClassAbstractWithProtectedEmptyConstructor()
     {
-        var type = assembly.GetType("ClassAbstractWithProtectedConstructor", true);
-        var constructorInfo = type
-            .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-            .Single(x => x.GetParameters().Length == 0);
-
-        Assert.True(constructorInfo.IsFamily);
-        Assert.False(constructorInfo.IsPublic);
+        var constructor = assembly.GetConstructor("ClassAbstractWithProtectedConstructor");
+        Assert.True(constructor.IsFamily);
+        Assert.False(constructor.IsPublic);
     }
 
     public MakeExistingEmptyConstructorsPublicIntegrationTests(ITestOutputHelper output) :

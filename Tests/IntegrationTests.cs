@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using Fody;
 using Xunit;
@@ -114,25 +113,17 @@ public class IntegrationTests :
     [Fact]
     public void ClassAbstractWithPrivateEmptyConstructor()
     {
-        var type = assembly.GetType("ClassAbstractWithPrivateConstructor", true);
-        var constructorInfo = type
-            .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-            .Single(x => x.GetParameters().Length == 0);
-
-        Assert.False(constructorInfo.IsPublic);
-        Assert.False(constructorInfo.IsFamily);
+        var constructor = assembly.GetConstructor("ClassAbstractWithPrivateConstructor");
+        Assert.False(constructor.IsPublic);
+        Assert.False(constructor.IsFamily);
     }
 
     [Fact]
     public void ClassAbstractWithProtectedEmptyConstructor()
     {
-        var type = assembly.GetType("ClassAbstractWithProtectedConstructor", true);
-        var constructorInfo = type
-            .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-            .Single(x => x.GetParameters().Length == 0);
-
-        Assert.True(constructorInfo.IsFamily);
-        Assert.False(constructorInfo.IsPublic);
+        var constructor = assembly.GetConstructor("ClassAbstractWithProtectedConstructor");
+        Assert.True(constructor.IsFamily);
+        Assert.False(constructor.IsPublic);
     }
 
     [Fact]
