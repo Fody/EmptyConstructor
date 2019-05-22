@@ -9,7 +9,7 @@
     <PackageTags>Empty Constructor, ILWeaving, Fody, Cecil</PackageTags>
     <PackageOutputPath>$(SolutionDir)nugets</PackageOutputPath>
     <PackageIconUrl>https://raw.githubusercontent.com/Fody/EmptyConstructor/master/package_icon.png</PackageIconUrl>
-    <PackageProjectUrl>http://github.com/Fody/EmptyConstructor</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Fody/EmptyConstructor</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
