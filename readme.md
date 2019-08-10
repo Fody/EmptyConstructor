@@ -153,4 +153,4 @@ Or as a attribute with items delimited by a pipe `|`.
 
 ## Icon
 
-Icon courtesy of [The Noun Project](http://thenounproject.com)
+Icon courtesy of [The Noun Project](https://thenounproject.com)
