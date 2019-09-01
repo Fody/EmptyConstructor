@@ -1,5 +1,5 @@
 [![Chat on Gitter](https://img.shields.io/gitter/room/fody/fody.svg)](https://gitter.im/Fody/Fody)
-[![NuGet Status](http://img.shields.io/nuget/v/EmptyConstructor.Fody.svg)](https://www.nuget.org/packages/EmptyConstructor.Fody/)
+[![NuGet Status](https://img.shields.io/nuget/v/EmptyConstructor.Fody.svg)](https://www.nuget.org/packages/EmptyConstructor.Fody/)
 
 ![Icon](https://raw.githubusercontent.com/Fody/EmptyConstructor/master/package_icon.png)
 
