@@ -5,7 +5,7 @@ using Xunit.Abstractions;
 using MethodAttributes = Mono.Cecil.MethodAttributes;
 
 public class MakeExistingEmptyConstructorsPublicIntegrationTests :
-    XunitLoggingBase
+    XunitApprovalBase
 {
     static Assembly assembly;
     static TestResult testResult;
