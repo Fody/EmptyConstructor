@@ -1,11 +1,12 @@
 ﻿using System.Xml.Linq;
 using Fody;
 using Mono.Cecil;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
 public class ConfigReaderTests :
-    XunitApprovalBase
+    VerifyBase
 {
     [Fact]
     public void ExcludeNamespacesNode()

@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
 using Fody;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 using MethodAttributes = Mono.Cecil.MethodAttributes;
 
 public class MakeExistingEmptyConstructorsPublicIntegrationTests :
-    XunitApprovalBase
+    VerifyBase
 {
     static Assembly assembly;
     static TestResult testResult;
