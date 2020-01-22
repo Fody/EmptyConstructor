@@ -20,11 +20,36 @@ public partial class ModuleWeaver
         ReadMakeExistingEmptyConstructorsVisible();
         ReadExcludes();
         ReadIncludes();
+        ReadInitializersPreserving();
 
         if (IncludeNamespaces.Any() && ExcludeNamespaces.Any())
         {
             throw new WeavingException("Either configure IncludeNamespaces OR ExcludeNamespaces, not both.");
         }
+    }
+
+    void ReadInitializersPreserving()
+    {
+        var attribute = Config.Attribute("PreserveInitializers");
+        if (attribute == null)
+        {
+            return;
+        }
+
+        if (string.Compare(attribute.Value, "true", StringComparison.OrdinalIgnoreCase) == 0)
+        {
+            PreserveInitializers = true;
+            return;
+        }
+
+        if (string.Compare(attribute.Value, "false", StringComparison.OrdinalIgnoreCase) == 0)
+        {
+            PreserveInitializers = false;
+            return;
+        }
+
+        var message = $"Could not convert '{attribute.Value}' to a boolean. Only 'true' or 'false' are allowed.";
+        throw new WeavingException(message);
     }
 
     void ReadVisibility()

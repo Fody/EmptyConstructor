@@ -163,6 +163,24 @@ public class IntegrationTests :
         testResult.GetInstance("ClassInheritWithGenericInReverseDeclarationOrder");
     }
 
+    [Fact]
+    public void ClassWithInitializedFields()
+    {
+        var instance = testResult.GetInstance("ClassWithInitializedFields");
+        Assert.Equal(9, instance.X);
+        Assert.Equal("aString", instance.Y);
+        Assert.NotNull(instance.Z);
+    }
+
+    [Fact]
+    public void ClassWithInitializedProperties()
+    {
+        var instance = testResult.GetInstance("ClassWithInitializedProperties");
+        Assert.Equal(9, instance.X);
+        Assert.Equal("aString", instance.Y);
+        Assert.NotNull(instance.Z);
+    }
+
     public IntegrationTests(ITestOutputHelper output) : 
         base(output)
     {

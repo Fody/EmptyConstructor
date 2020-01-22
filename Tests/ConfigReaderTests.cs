@@ -81,6 +81,33 @@ Foo.Bar
     }
 
     [Fact]
+    public void PreserveInitializers_Default()
+    {
+        var xElement = XElement.Parse("<EmptyConstructor/>");
+        var moduleWeaver = new ModuleWeaver { Config = xElement };
+        moduleWeaver.ReadConfig();
+        Assert.True(moduleWeaver.PreserveInitializers);
+    }
+
+    [Fact]
+    public void PreserveInitializers_False()
+    {
+        var xElement = XElement.Parse("<EmptyConstructor PreserveInitializers='False'/>");
+        var moduleWeaver = new ModuleWeaver { Config = xElement };
+        moduleWeaver.ReadConfig();
+        Assert.False(moduleWeaver.PreserveInitializers);
+    }
+
+    [Fact]
+    public void PreserveInitializers_True()
+    {
+        var xElement = XElement.Parse("<EmptyConstructor PreserveInitializers='True'/>");
+        var moduleWeaver = new ModuleWeaver { Config = xElement };
+        moduleWeaver.ReadConfig();
+        Assert.True(moduleWeaver.PreserveInitializers);
+    }
+
+    [Fact]
     public void ExcludeNamespacesAttribute()
     {
         var xElement = XElement.Parse(@"
