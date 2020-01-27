@@ -155,7 +155,7 @@ Or as a attribute with items delimited by a pipe `|`.
 By default, field & property initializers are called when generated constructor is called (behaves like default constructor is handwritten). This behavior can be disabled by `DoNotPreserveInitializers` attribute.
 
 ```xml
-<EmptyConstructor DoNotPreserveInitializers='false'/>
+<EmptyConstructor DoNotPreserveInitializers='true'/>
 ```
 
 
