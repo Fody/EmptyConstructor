@@ -9,7 +9,7 @@ public partial class ModuleWeaver:BaseModuleWeaver
 {
     public MethodAttributes Visibility = MethodAttributes.Public;
     public bool MakeExistingEmptyConstructorsVisible;
-    public bool PreserveInitializers = true;
+    public bool DoNotPreserveInitializers;
 
     public override void Execute()
     {
@@ -135,7 +135,7 @@ public partial class ModuleWeaver:BaseModuleWeaver
 
     void TryInjectPropertyOrFieldInitializers(TypeDefinition type, MethodDefinition method)
     {
-        if (!PreserveInitializers)
+        if (DoNotPreserveInitializers)
         {
             return;
         }

@@ -150,6 +150,14 @@ Or as a attribute with items delimited by a pipe `|`.
 <EmptyConstructor IncludeNamespaces='Foo|Bar'/>
 ```
 
+### Initializers preserving
+
+By default, field & property initializers are called when generated constructor is called (behaves like default constructor is handwritten). This behavior can be disabled by `DoNotPreserveInitializers` attribute.
+
+```xml
+<EmptyConstructor DoNotPreserveInitializers='false'/>
+```
+
 
 ## Icon
 

@@ -30,7 +30,7 @@ public partial class ModuleWeaver
 
     void ReadInitializersPreserving()
     {
-        var attribute = Config.Attribute("PreserveInitializers");
+        var attribute = Config.Attribute("DoNotPreserveInitializers");
         if (attribute == null)
         {
             return;
@@ -38,13 +38,13 @@ public partial class ModuleWeaver
 
         if (string.Compare(attribute.Value, "true", StringComparison.OrdinalIgnoreCase) == 0)
         {
-            PreserveInitializers = true;
+            DoNotPreserveInitializers = true;
             return;
         }
 
         if (string.Compare(attribute.Value, "false", StringComparison.OrdinalIgnoreCase) == 0)
         {
-            PreserveInitializers = false;
+            DoNotPreserveInitializers = false;
             return;
         }
 
