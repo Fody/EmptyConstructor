@@ -86,25 +86,25 @@ Foo.Bar
         var xElement = XElement.Parse("<EmptyConstructor/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.True(moduleWeaver.PreserveInitializers);
+        Assert.False(moduleWeaver.DoNotPreserveInitializers);
     }
 
     [Fact]
     public void PreserveInitializers_False()
     {
-        var xElement = XElement.Parse("<EmptyConstructor PreserveInitializers='False'/>");
+        var xElement = XElement.Parse("<EmptyConstructor DoNotPreserveInitializers='False'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.False(moduleWeaver.PreserveInitializers);
+        Assert.False(moduleWeaver.DoNotPreserveInitializers);
     }
 
     [Fact]
     public void PreserveInitializers_True()
     {
-        var xElement = XElement.Parse("<EmptyConstructor PreserveInitializers='True'/>");
+        var xElement = XElement.Parse("<EmptyConstructor DoNotPreserveInitializers='True'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.True(moduleWeaver.PreserveInitializers);
+        Assert.True(moduleWeaver.DoNotPreserveInitializers);
     }
 
     [Fact]
