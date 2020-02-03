@@ -84,7 +84,7 @@ public partial class ModuleWeaver:BaseModuleWeaver
                 if (baseEmptyConstructor == null)
                 {
                     processed.Add(type, null);
-                    LogDebug($"Could not inject empty constructor in {type.FullName} because base class does not have a parameterless constructor and is from an external assembly");
+                    WriteDebug($"Could not inject empty constructor in {type.FullName} because base class does not have a parameterless constructor and is from an external assembly");
                     continue;
                 }
             }
@@ -100,7 +100,7 @@ public partial class ModuleWeaver:BaseModuleWeaver
             if (baseEmptyConstructor.Resolve().IsPrivate)
             {
                 processed.Add(type, null);
-                LogWarning($"Could not inject empty constructor in {type.FullName} because the base class has a private parameterless constructor");
+                WriteWarning($"Could not inject empty constructor in {type.FullName} because the base class has a private parameterless constructor");
             }
             else
             {
@@ -118,7 +118,7 @@ public partial class ModuleWeaver:BaseModuleWeaver
 
     MethodDefinition AddEmptyConstructor(TypeDefinition type)
     {
-        LogDebug("Processing " + type.FullName);
+        WriteDebug("Processing " + type.FullName);
 
         var methodAttributes = Visibility | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
         var method = new MethodDefinition(".ctor", methodAttributes, TypeSystem.VoidReference);
