@@ -3,11 +3,13 @@ using System.Linq;
 using Fody;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using Mono.Cecil.Rocks;
 
 public partial class ModuleWeaver:BaseModuleWeaver
 {
     public MethodAttributes Visibility = MethodAttributes.Public;
     public bool MakeExistingEmptyConstructorsVisible;
+    public bool DoNotPreserveInitializers;
 
     public override void Execute()
     {
@@ -117,14 +119,57 @@ public partial class ModuleWeaver:BaseModuleWeaver
     MethodDefinition AddEmptyConstructor(TypeDefinition type)
     {
         LogDebug("Processing " + type.FullName);
+
         var methodAttributes = Visibility | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
         var method = new MethodDefinition(".ctor", methodAttributes, TypeSystem.VoidReference);
+
+        TryInjectPropertyOrFieldInitializers(type, method);
+        
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Ldarg_0));
         var methodReference = new MethodReference(".ctor", TypeSystem.VoidReference, type.BaseType){HasThis = true};
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Call, methodReference));
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
         type.Methods.Add(method);
         return method;
+    }
+
+    void TryInjectPropertyOrFieldInitializers(TypeDefinition type, MethodDefinition method)
+    {
+        if (DoNotPreserveInitializers)
+        {
+            return;
+        }
+
+        var existingConstructor = type.GetConstructors().FirstOrDefault();
+        if (existingConstructor != null) // any constructor exists - try to clone its initializers part (should be before calling base.ctor())
+        {
+            var initializerInstructions = existingConstructor
+                .Body
+                .Instructions
+                .TakeWhile(i => !IsBaseConstructorCallInstruction(i, type))
+                .Reverse() // cut also instructions preparing constructor call
+                .SkipWhile(i => !IsLdArg0Instruction(i)) // first of them should be ldarg.0
+                .Skip(1) // skip also ldarg.0
+                .Reverse();
+
+            foreach (var instruction in initializerInstructions)
+            {
+                method.Body.Instructions.Add(instruction);
+            }
+        }
+    }
+
+    static bool IsLdArg0Instruction(Instruction instruction)
+    {
+        return instruction.OpCode == OpCodes.Ldarg_0;
+    }
+
+    static bool IsBaseConstructorCallInstruction(Instruction instruction, TypeDefinition type)
+    {
+        return instruction.OpCode == OpCodes.Call
+               && instruction.Operand is MethodReference methodReference
+               && methodReference.DeclaringType == type.BaseType
+               && methodReference.Name == ".ctor";
     }
 
     void MakeConstructorVisibleIfConfiguredAndNecessary(MethodDefinition typeEmptyConstructor)
