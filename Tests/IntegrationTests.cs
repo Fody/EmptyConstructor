@@ -181,7 +181,14 @@ public class IntegrationTests :
         Assert.NotNull(instance.Z);
     }
 
-    public IntegrationTests(ITestOutputHelper output) : 
+    [Fact]
+    public void ReproBug143()
+    {
+        var instance = testResult.GetInstance("Bug143Child");
+        Assert.NotNull(instance);
+    }
+
+    public IntegrationTests(ITestOutputHelper output) :
         base(output)
     {
     }
