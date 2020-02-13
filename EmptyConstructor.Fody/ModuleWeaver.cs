@@ -9,7 +9,7 @@ public partial class ModuleWeaver:BaseModuleWeaver
 {
     public MethodAttributes Visibility = MethodAttributes.Public;
     public bool MakeExistingEmptyConstructorsVisible;
-    public bool DoNotPreserveInitializers;
+    public bool PreserveInitializers;
 
     public override void Execute()
     {
@@ -124,7 +124,7 @@ public partial class ModuleWeaver:BaseModuleWeaver
         var method = new MethodDefinition(".ctor", methodAttributes, TypeSystem.VoidReference);
 
         TryInjectPropertyOrFieldInitializers(type, method);
-        
+
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Ldarg_0));
         var methodReference = new MethodReference(".ctor", TypeSystem.VoidReference, type.BaseType){HasThis = true};
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Call, methodReference));
@@ -135,7 +135,7 @@ public partial class ModuleWeaver:BaseModuleWeaver
 
     void TryInjectPropertyOrFieldInitializers(TypeDefinition type, MethodDefinition method)
     {
-        if (DoNotPreserveInitializers)
+        if (!PreserveInitializers)
         {
             return;
         }

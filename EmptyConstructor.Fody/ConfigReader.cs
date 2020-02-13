@@ -30,26 +30,7 @@ public partial class ModuleWeaver
 
     void ReadInitializersPreserving()
     {
-        var attribute = Config.Attribute("DoNotPreserveInitializers");
-        if (attribute == null)
-        {
-            return;
-        }
-
-        if (string.Compare(attribute.Value, "true", StringComparison.OrdinalIgnoreCase) == 0)
-        {
-            DoNotPreserveInitializers = true;
-            return;
-        }
-
-        if (string.Compare(attribute.Value, "false", StringComparison.OrdinalIgnoreCase) == 0)
-        {
-            DoNotPreserveInitializers = false;
-            return;
-        }
-
-        var message = $"Could not convert '{attribute.Value}' to a boolean. Only 'true' or 'false' are allowed.";
-        throw new WeavingException(message);
+        TryReadBooleanAttribute("PreserveInitializers", ref PreserveInitializers);
     }
 
     void ReadVisibility()
@@ -78,26 +59,7 @@ public partial class ModuleWeaver
 
     void ReadMakeExistingEmptyConstructorsVisible()
     {
-        var attribute = Config.Attribute("MakeExistingEmptyConstructorsVisible");
-        if (attribute == null)
-        {
-            return;
-        }
-
-        if (string.Compare(attribute.Value, "true", StringComparison.OrdinalIgnoreCase) == 0)
-        {
-            MakeExistingEmptyConstructorsVisible = true;
-            return;
-        }
-
-        if (string.Compare(attribute.Value, "false", StringComparison.OrdinalIgnoreCase) == 0)
-        {
-            MakeExistingEmptyConstructorsVisible = false;
-            return;
-        }
-
-        var message = $"Could not convert '{attribute.Value}' to a boolean. Only 'true' or 'false' are allowed.";
-        throw new WeavingException(message);
+        TryReadBooleanAttribute("MakeExistingEmptyConstructorsVisible", ref MakeExistingEmptyConstructorsVisible);
     }
 
     void ReadExcludes()
@@ -156,5 +118,29 @@ public partial class ModuleWeaver
         {
             IncludeNamespaces.Add(item);
         }
+    }
+
+    void TryReadBooleanAttribute(string attributeName, ref bool value)
+    {
+        var attribute = Config.Attribute(attributeName);
+        if (attribute == null)
+        {
+            return;
+        }
+
+        if (string.Compare(attribute.Value, "true", StringComparison.OrdinalIgnoreCase) == 0)
+        {
+            value = true;
+            return;
+        }
+
+        if (string.Compare(attribute.Value, "false", StringComparison.OrdinalIgnoreCase) == 0)
+        {
+            value = false;
+            return;
+        }
+
+        var message = $"Could not convert {attributeName}='{attribute.Value}' to a boolean. Only 'true' or 'false' are allowed.";
+        throw new WeavingException(message);
     }
 }
