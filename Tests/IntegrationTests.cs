@@ -167,21 +167,21 @@ public class IntegrationTests :
     public void ClassWithInitializedFields()
     {
         var instance = testResult.GetInstance("ClassWithInitializedFields");
-        Assert.Equal(9, instance.X);
-        Assert.Equal("aString", instance.Y);
-        Assert.NotNull(instance.Z);
+        Assert.Equal(0, instance.X);
+        Assert.Equal(null, instance.Y);
+        Assert.Null(instance.Z);
     }
 
     [Fact]
     public void ClassWithInitializedProperties()
     {
         var instance = testResult.GetInstance("ClassWithInitializedProperties");
-        Assert.Equal(9, instance.X);
-        Assert.Equal("aString", instance.Y);
-        Assert.NotNull(instance.Z);
+        Assert.Equal(0, instance.X);
+        Assert.Equal(null, instance.Y);
+        Assert.Null(instance.Z);
     }
 
-    public IntegrationTests(ITestOutputHelper output) : 
+    public IntegrationTests(ITestOutputHelper output) :
         base(output)
     {
     }
