@@ -152,14 +152,51 @@ Or as a attribute with items delimited by a pipe `|`.
 <EmptyConstructor IncludeNamespaces='Foo|Bar'/>
 ```
 
-### Initializers preserving
+### Initializers Preservation
 
-By default, field & property initializers are called when generated constructor is called (behaves like default constructor is handwritten). This behavior can be disabled by `DoNotPreserveInitializers` attribute.
+By default, the generated constructors remain empty. If you would like field & property initialization to be copied from an existing constructor enable this via the `PreserveInitializers` attribute.
 
 ```xml
-<EmptyConstructor DoNotPreserveInitializers='true'/>
+<EmptyConstructor PreserveInitializers='true'/>
 ```
 
+Example, without initializers preservation:
+
+    public class Foo
+    {
+        private int someValue;
+        private int otherValue;
+        
+        public Foo(int someValue)
+        {
+          this.someValue = someValue;
+          otherValue = 17;
+        }
+        
+        // generated constructor
+        public Foo() { }
+    }
+
+Example, with initializers preservation:
+
+    public class Foo
+    {
+        private int someValue;
+        private int otherValue;
+        
+        public Foo(int someValue)
+        {
+          this.someValue = someValue;
+          otherValue = 17;
+        }
+        
+        // generated constructor
+        public Foo()
+        {
+            // note: this.someValue isn't set
+            otherValue = 17;
+        }
+    }
 
 ## Icon
 
