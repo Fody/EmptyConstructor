@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using Fody;
-using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class IntegrationTests :
-    VerifyBase
+public class IntegrationTests
 {
     static Assembly assembly;
     static TestResult testResult;
@@ -179,10 +176,5 @@ public class IntegrationTests :
         Assert.Equal(0, instance.X);
         Assert.Equal(null, instance.Y);
         Assert.Null(instance.Z);
-    }
-
-    public IntegrationTests(ITestOutputHelper output) :
-        base(output)
-    {
     }
 }

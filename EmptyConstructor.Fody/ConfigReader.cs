@@ -11,11 +11,6 @@ public partial class ModuleWeaver
 
     public void ReadConfig()
     {
-        if (Config == null)
-        {
-            return;
-        }
-
         ReadVisibility();
         ReadMakeExistingEmptyConstructorsVisible();
         ReadExcludes();

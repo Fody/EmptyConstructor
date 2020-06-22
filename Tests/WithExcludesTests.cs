@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Fody;
-using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class WithExcludesTests :
-    VerifyBase
+public class WithExcludesTests
 {
     static Assembly assembly;
     static TestResult testResult;
@@ -33,10 +30,5 @@ public class WithExcludesTests :
     {
         var type = assembly.GetType("MyNameSpace.ClassWithNoEmptyConstructorInNamespace", true);
         Assert.Single(type.GetConstructors());
-    }
-
-    public WithExcludesTests(ITestOutputHelper output) :
-        base(output)
-    {
     }
 }

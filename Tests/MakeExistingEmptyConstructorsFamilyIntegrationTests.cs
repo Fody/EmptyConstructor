@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Reflection;
 using Fody;
-using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 using MethodAttributes = Mono.Cecil.MethodAttributes;
 
-public class MakeExistingEmptyConstructorsFamilyIntegrationTests :
-    VerifyBase
+public class MakeExistingEmptyConstructorsFamilyIntegrationTests
 {
     static Assembly assembly;
     static TestResult testResult;
@@ -68,10 +65,5 @@ public class MakeExistingEmptyConstructorsFamilyIntegrationTests :
         var constructor = assembly.GetConstructor("ClassAbstractWithProtectedConstructor");
         Assert.True(constructor.IsFamily);
         Assert.False(constructor.IsPublic);
-    }
-
-    public MakeExistingEmptyConstructorsFamilyIntegrationTests(ITestOutputHelper output) :
-        base(output)
-    {
     }
 }

@@ -1,13 +1,8 @@
-using System.Reflection;
 using Fody;
-using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class PreserveInitializersIntegrationTests :
-    VerifyBase
+public class PreserveInitializersIntegrationTests
 {
-    static Assembly assembly;
     static TestResult testResult;
 
     static PreserveInitializersIntegrationTests()
@@ -18,7 +13,6 @@ public class PreserveInitializersIntegrationTests :
         };
         testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
             assemblyName: nameof(MakeExistingEmptyConstructorsFamilyIntegrationTests));
-        assembly = testResult.Assembly;
     }
 
     [Fact]
@@ -37,10 +31,5 @@ public class PreserveInitializersIntegrationTests :
         Assert.Equal(9, instance.X);
         Assert.Equal("aString", instance.Y);
         Assert.NotNull(instance.Z);
-    }
-
-    public PreserveInitializersIntegrationTests(ITestOutputHelper output) :
-        base(output)
-    {
     }
 }
