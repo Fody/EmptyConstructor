@@ -177,4 +177,11 @@ public class IntegrationTests
         Assert.Equal(null, instance.Y);
         Assert.Null(instance.Z);
     }
+
+    [Fact]
+    public void ReproBug143()
+    {
+        var instance = testResult.GetInstance("Bug143Child");
+        Assert.NotNull(instance);
+    }
 }
