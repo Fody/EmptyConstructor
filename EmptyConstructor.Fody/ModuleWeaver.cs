@@ -168,7 +168,7 @@ public partial class ModuleWeaver:BaseModuleWeaver
     {
         return instruction.OpCode == OpCodes.Call
                && instruction.Operand is MethodReference methodReference
-               && methodReference.DeclaringType == type.BaseType
+               && methodReference.DeclaringType.FullName == type.BaseType.FullName
                && methodReference.Name == ".ctor";
     }
 

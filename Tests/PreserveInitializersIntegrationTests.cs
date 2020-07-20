@@ -12,7 +12,7 @@ public class PreserveInitializersIntegrationTests
             PreserveInitializers = true
         };
         testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
-            assemblyName: nameof(MakeExistingEmptyConstructorsFamilyIntegrationTests));
+            assemblyName: nameof(PreserveInitializersIntegrationTests));
     }
 
     [Fact]
@@ -31,5 +31,12 @@ public class PreserveInitializersIntegrationTests
         Assert.Equal(9, instance.X);
         Assert.Equal("aString", instance.Y);
         Assert.NotNull(instance.Z);
+    }
+
+    [Fact]
+    public void ReproBug143()
+    {
+        var instance = testResult.GetInstance("Bug143Child");
+        Assert.NotNull(instance);
     }
 }
