@@ -150,7 +150,10 @@ public partial class ModuleWeaver:BaseModuleWeaver
                 .Reverse() // cut also instructions preparing constructor call
                 .SkipWhile(i => !IsLdArg0Instruction(i)) // first of them should be ldarg.0
                 .Skip(1) // skip also ldarg.0
-                .Reverse();
+                .Reverse()
+                .ToList();
+
+            RemoveInstructionsLoadingArguments(initializerInstructions);
 
             foreach (var instruction in initializerInstructions)
             {
@@ -159,9 +162,56 @@ public partial class ModuleWeaver:BaseModuleWeaver
         }
     }
 
+    /// <summary>
+    /// Removes blocks of instructions that uses constructor arguments. Works also for records.
+    /// </summary>
+    void RemoveInstructionsLoadingArguments(IList<Instruction> instructions)
+    {
+        for (var i = 1; i < instructions.Count; i++)
+        {
+            var previousInstruction = instructions[i - 1];
+            var currentInstruction = instructions[i];
+
+            if (IsLdArgInstruction(currentInstruction)
+                && !IsLdArg0Instruction(currentInstruction) // loading of non-"this" argument
+                && IsLdArg0Instruction(previousInstruction)) // following loading of "this" argument
+            {
+                instructions.RemoveAt(i);
+                instructions.RemoveAt(i - 1);
+
+                i--;
+
+                // now we must remove also instructions handling the argument
+                // we assume next block of instructions starts with LDARG.0
+
+                for (var j = i; j < instructions.Count; j++)
+                {
+                    if (!IsLdArg0Instruction(instructions[j]))
+                    {
+                        instructions.RemoveAt(j);
+                        j--;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     static bool IsLdArg0Instruction(Instruction instruction)
     {
         return instruction.OpCode == OpCodes.Ldarg_0;
+    }
+
+    static bool IsLdArgInstruction(Instruction instruction)
+    {
+        return instruction.OpCode == OpCodes.Ldarg_0
+               || instruction.OpCode == OpCodes.Ldarg_1
+               || instruction.OpCode == OpCodes.Ldarg_2
+               || instruction.OpCode == OpCodes.Ldarg_3
+               || instruction.OpCode == OpCodes.Ldarg_S;
     }
 
     static bool IsBaseConstructorCallInstruction(Instruction instruction, TypeDefinition type)

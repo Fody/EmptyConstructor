@@ -39,4 +39,19 @@ public class PreserveInitializersIntegrationTests
         var instance = testResult.GetInstance("Bug143Child");
         Assert.NotNull(instance);
     }
+
+#if NET5_0
+    [Fact]
+    public void RecordWithParameter()
+    {
+        testResult.GetInstance("RecordWithParameter");
+    }
+
+    [Fact]
+    public void RecordWithParameterAndInitializedField()
+    {
+        var instance = testResult.GetInstance("RecordWithParameterAndInitializedField");
+        Assert.Equal(9, instance.X);
+    }
+#endif
 }
