@@ -1,6 +1,5 @@
-namespace AssemblyToReference
+namespace AssemblyToReference;
+
+public class ClassWithEmptyConstructor
 {
-    public class ClassWithEmptyConstructor
-    {
-    }
 }

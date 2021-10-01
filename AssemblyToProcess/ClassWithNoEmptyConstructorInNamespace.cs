@@ -1,10 +1,9 @@
-namespace MyNameSpace
+namespace MyNameSpace;
+
+public class ClassWithNoEmptyConstructorInNamespace
 {
-    public class ClassWithNoEmptyConstructorInNamespace
-    {
 // ReSharper disable once UnusedParameter.Local
-        public ClassWithNoEmptyConstructorInNamespace(int x)
-        {
-        }
+    public ClassWithNoEmptyConstructorInNamespace(int x)
+    {
     }
 }

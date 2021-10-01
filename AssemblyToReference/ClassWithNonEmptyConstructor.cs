@@ -1,10 +1,9 @@
-namespace AssemblyToReference
+namespace AssemblyToReference;
+
+public class ClassWithNonEmptyConstructor
 {
-    public class ClassWithNonEmptyConstructor
-    {
 // ReSharper disable once UnusedParameter.Local
-        public ClassWithNonEmptyConstructor(int x)
-        {
-        }
+    public ClassWithNonEmptyConstructor(int x)
+    {
     }
 }
