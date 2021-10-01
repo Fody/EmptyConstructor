@@ -184,4 +184,12 @@ public class IntegrationTests
         var instance = testResult.GetInstance("Bug143Child");
         Assert.NotNull(instance);
     }
+
+#if NET5_0
+    [Fact]
+    public void RecordWithParameter()
+    {
+        testResult.GetInstance("RecordWithParameter");
+    }
+#endif
 }
