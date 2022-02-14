@@ -162,41 +162,45 @@ By default, the generated constructors remain empty. If you would like field & p
 
 Example, without initializers preservation:
 
-    public class Foo
+```cs
+public class Foo
+{
+    private int someValue;
+    private int otherValue;
+        
+    public Foo(int someValue)
     {
-        private int someValue;
-        private int otherValue;
-        
-        public Foo(int someValue)
-        {
-          this.someValue = someValue;
-          otherValue = 17;
-        }
-        
-        // generated constructor
-        public Foo() { }
+        this.someValue = someValue;
+        otherValue = 17;
     }
+        
+    // generated constructor
+    public Foo() { }
+}
+```
 
 Example, with initializers preservation:
 
-    public class Foo
+```cs
+public class Foo
+{
+    private int someValue;
+    private int otherValue;
+        
+    public Foo(int someValue)
     {
-        private int someValue;
-        private int otherValue;
-        
-        public Foo(int someValue)
-        {
-          this.someValue = someValue;
-          otherValue = 17;
-        }
-        
-        // generated constructor
-        public Foo()
-        {
-            // note: this.someValue isn't set
-            otherValue = 17;
-        }
+        this.someValue = someValue;
+        otherValue = 17;
     }
+        
+    // generated constructor
+    public Foo()
+    {
+        // note: this.someValue isn't set
+        otherValue = 17;
+    }
+}
+```
 
 ## Icon
 
