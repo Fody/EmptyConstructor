@@ -165,7 +165,7 @@ public partial class ModuleWeaver:BaseModuleWeaver
     /// <summary>
     /// Removes blocks of instructions that uses constructor arguments. Works also for records.
     /// </summary>
-    void RemoveInstructionsLoadingArguments(IList<Instruction> instructions)
+    static void RemoveInstructionsLoadingArguments(IList<Instruction> instructions)
     {
         for (var i = 1; i < instructions.Count; i++)
         {
@@ -248,7 +248,7 @@ public partial class ModuleWeaver:BaseModuleWeaver
         if (typeEmptyConstructor.IsPrivate)
         {
             typeEmptyConstructor.IsPrivate = false;
-            typeEmptyConstructor.Attributes = typeEmptyConstructor.Attributes | Visibility;
+            typeEmptyConstructor.Attributes |= Visibility;
         }
     }
 }

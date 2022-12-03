@@ -15,7 +15,8 @@ public class MakeExistingEmptyConstructorsPublicIntegrationTests
             Visibility = MethodAttributes.Public,
             MakeExistingEmptyConstructorsVisible = true
         };
-        testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
+        testResult = weavingTask.ExecuteTestRun(
+            "AssemblyToProcess.dll",
             assemblyName: nameof(MakeExistingEmptyConstructorsPublicIntegrationTests));
         assembly = testResult.Assembly;
     }

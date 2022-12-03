@@ -6,8 +6,8 @@ using Mono.Cecil;
 
 public partial class ModuleWeaver
 {
-    public List<string> IncludeNamespaces = new List<string>();
-    public List<string> ExcludeNamespaces = new List<string>();
+    public List<string> IncludeNamespaces = new();
+    public List<string> ExcludeNamespaces = new();
 
     public void ReadConfig()
     {
