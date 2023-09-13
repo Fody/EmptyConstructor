@@ -17,7 +17,7 @@ static class Extensions
 
     public static IEnumerable<string> NonEmpty(this IEnumerable<string> list)
     {
-        return list.Select(x => x.Trim()).Where(x => x != string.Empty);
+        return list.Select(_ => _.Trim()).Where(_ => _ != string.Empty);
     }
 
     public static MethodDefinition GetEmptyConstructor(this TypeDefinition typeDefinition)
@@ -27,7 +27,7 @@ static class Extensions
 
     public static bool IsStaticClass(this TypeDefinition typeDefinition)
     {
-        return !typeDefinition.Methods.Any(x => x.IsConstructor && !x.IsStatic);
+        return !typeDefinition.Methods.Any(_ => _.IsConstructor && !_.IsStatic);
     }
 
     public static Instruction Clone(this Instruction instruction)

@@ -16,6 +16,6 @@ static class AssemblyExtensions
         var type = assembly.GetType(className, true);
         return type
             .GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-            .Single(x => x.GetParameters().Length == 0);
+            .Single(_ => _.GetParameters().Length == 0);
     }
 }
