@@ -5,6 +5,8 @@
 
 Adds an empty constructor to classes even if you have a non-empty one defined.
 
+**See [Milestones](../../milestones?state=closed) for release notes.**
+
 
 ### This is an add-in for [Fody](https://github.com/Fody/Home/)
 
