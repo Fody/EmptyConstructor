@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using Fody;
 using Xunit;
 
@@ -12,7 +11,10 @@ public class WithExcludesTests
     {
         var weavingTask = new ModuleWeaver
         {
-            ExcludeNamespaces = new List<string> { "MyNameSpace" },
+            ExcludeNamespaces = new()
+            {
+                "MyNameSpace"
+            },
         };
         testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
             assemblyName: nameof(WithExcludesTests));

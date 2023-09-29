@@ -1,3 +1,1 @@
-public interface SimpleInterface
-{
-}
+public interface SimpleInterface;

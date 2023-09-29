@@ -1,3 +1,1 @@
-public abstract class ClassAbstractWithEmptyConstructor
-{
-}
+public abstract class ClassAbstractWithEmptyConstructor;

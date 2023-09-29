@@ -1,3 +1,1 @@
-public struct SimpleStruct
-{
-}
+public struct SimpleStruct;

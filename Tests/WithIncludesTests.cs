@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using Fody;
 using Xunit;
 
@@ -12,7 +11,7 @@ public class WithIncludesTests
     {
         var weavingTask = new ModuleWeaver
         {
-            IncludeNamespaces = new List<string>
+            IncludeNamespaces = new()
             {
                 "MyNameSpace"
             },

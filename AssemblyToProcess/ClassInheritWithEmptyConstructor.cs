@@ -1,3 +1,2 @@
-public class ClassInheritWithEmptyConstructor : ClassWithEmptyConstructor
-{
-}
+public class ClassInheritWithEmptyConstructor :
+    ClassWithEmptyConstructor;

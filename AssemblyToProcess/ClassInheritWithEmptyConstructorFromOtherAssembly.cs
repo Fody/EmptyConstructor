@@ -1,3 +1,2 @@
-public class ClassInheritWithEmptyConstructorFromOtherAssembly : AssemblyToReference.ClassWithEmptyConstructor
-{
-}
+public class ClassInheritWithEmptyConstructorFromOtherAssembly :
+    AssemblyToReference.ClassWithEmptyConstructor;
