@@ -7,11 +7,11 @@ public class PreserveInitializersIntegrationTests
 
     static PreserveInitializersIntegrationTests()
     {
-        var weavingTask = new ModuleWeaver
+        var weaver = new ModuleWeaver
         {
             PreserveInitializers = true
         };
-        testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
+        testResult = weaver.ExecuteTestRun("AssemblyToProcess.dll",
             assemblyName: nameof(PreserveInitializersIntegrationTests));
     }
 

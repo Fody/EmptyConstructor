@@ -9,14 +9,15 @@ public class WithExcludesTests
 
     static WithExcludesTests()
     {
-        var weavingTask = new ModuleWeaver
+        var weaver = new ModuleWeaver
         {
             ExcludeNamespaces = new()
             {
                 "MyNameSpace"
             },
         };
-        testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
+        testResult = weaver.ExecuteTestRun(
+            "AssemblyToProcess.dll",
             assemblyName: nameof(WithExcludesTests));
         assembly = testResult.Assembly;
     }

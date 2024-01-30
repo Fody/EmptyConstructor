@@ -11,12 +11,13 @@ public class MakeExistingEmptyConstructorsFamilyIntegrationTests
 
     static MakeExistingEmptyConstructorsFamilyIntegrationTests()
     {
-        var weavingTask = new ModuleWeaver
+        var weaver = new ModuleWeaver
         {
             Visibility = MethodAttributes.Family,
             MakeExistingEmptyConstructorsVisible = true
         };
-        testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
+        testResult = weaver.ExecuteTestRun(
+            "AssemblyToProcess.dll",
             assemblyName: nameof(MakeExistingEmptyConstructorsFamilyIntegrationTests));
         assembly = testResult.Assembly;
     }

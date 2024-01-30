@@ -9,14 +9,14 @@ public class WithIncludesTests
 
     static WithIncludesTests()
     {
-        var weavingTask = new ModuleWeaver
+        var weaver = new ModuleWeaver
         {
             IncludeNamespaces = new()
             {
                 "MyNameSpace"
             },
         };
-        testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
+        testResult = weaver.ExecuteTestRun("AssemblyToProcess.dll",
             assemblyName: nameof(WithIncludesTests));
         assembly = testResult.Assembly;
     }

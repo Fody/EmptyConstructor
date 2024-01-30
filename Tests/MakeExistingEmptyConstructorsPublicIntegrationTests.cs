@@ -10,12 +10,12 @@ public class MakeExistingEmptyConstructorsPublicIntegrationTests
 
     static MakeExistingEmptyConstructorsPublicIntegrationTests()
     {
-        var weavingTask = new ModuleWeaver
+        var weaver = new ModuleWeaver
         {
             Visibility = MethodAttributes.Public,
             MakeExistingEmptyConstructorsVisible = true
         };
-        testResult = weavingTask.ExecuteTestRun(
+        testResult = weaver.ExecuteTestRun(
             "AssemblyToProcess.dll",
             assemblyName: nameof(MakeExistingEmptyConstructorsPublicIntegrationTests));
         assembly = testResult.Assembly;
