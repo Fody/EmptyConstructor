@@ -1,6 +1,5 @@
 # <img src="/package_icon.png" height="30px"> EmptyConstructor.Fody
 
-[![Chat on Gitter](https://img.shields.io/gitter/room/fody/fody.svg)](https://gitter.im/Fody/Fody)
 [![NuGet Status](https://img.shields.io/nuget/v/EmptyConstructor.Fody.svg)](https://www.nuget.org/packages/EmptyConstructor.Fody/)
 
 Adds an empty constructor to classes even if you have a non-empty one defined.
