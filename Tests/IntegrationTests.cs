@@ -166,7 +166,7 @@ public class IntegrationTests
     {
         var instance = testResult.GetInstance("ClassWithInitializedFields");
         Assert.Equal(0, instance.X);
-        Assert.Equal(null, instance.Y);
+        Assert.Null(instance.Y);
         Assert.Null(instance.Z);
     }
 
@@ -175,7 +175,7 @@ public class IntegrationTests
     {
         var instance = testResult.GetInstance("ClassWithInitializedProperties");
         Assert.Equal(0, instance.X);
-        Assert.Equal(null, instance.Y);
+        Assert.Null(instance.Y);
         Assert.Null(instance.Z);
     }
 
