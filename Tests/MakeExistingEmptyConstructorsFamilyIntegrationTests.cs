@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Reflection;
 using Fody;
-using Xunit;
 using MethodAttributes = Mono.Cecil.MethodAttributes;
 
 public class MakeExistingEmptyConstructorsFamilyIntegrationTests
@@ -22,49 +21,49 @@ public class MakeExistingEmptyConstructorsFamilyIntegrationTests
         assembly = testResult.Assembly;
     }
 
-    [Fact]
-    public void ClassWithPrivateEmptyConstructor_MustNotBeAbleToConstruct()
+    [Test]
+    public async Task ClassWithPrivateEmptyConstructor_MustNotBeAbleToConstruct()
     {
-        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassWithPrivateConstructor"));
+        await Assert.That(() => testResult.GetInstance("ClassWithPrivateConstructor")).Throws<MissingMethodException>();
     }
 
-    [Fact]
-    public void ClassWithPrivateEmptyConstructor_MustHaveCorrectAccessModifier()
+    [Test]
+    public async Task ClassWithPrivateEmptyConstructor_MustHaveCorrectAccessModifier()
     {
         var constructor = assembly.GetConstructor("ClassWithPrivateConstructor");
-        Assert.False(constructor.IsPrivate);
-        Assert.True(constructor.IsFamily);
-        Assert.False(constructor.IsPublic);
+        await Assert.That(constructor.IsPrivate).IsFalse();
+        await Assert.That(constructor.IsFamily).IsTrue();
+        await Assert.That(constructor.IsPublic).IsFalse();
     }
 
-    [Fact]
-    public void ClassWithProtectedEmptyConstructor_MustNotBeAbleToConstruct()
+    [Test]
+    public async Task ClassWithProtectedEmptyConstructor_MustNotBeAbleToConstruct()
     {
-        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassWithProtectedConstructor"));
+        await Assert.That(() => testResult.GetInstance("ClassWithProtectedConstructor")).Throws<MissingMethodException>();
     }
 
-    [Fact]
-    public void ClassWithProtectedEmptyConstructor_MustHaveCorrectAccessModifier()
+    [Test]
+    public async Task ClassWithProtectedEmptyConstructor_MustHaveCorrectAccessModifier()
     {
         var constructor = assembly.GetConstructor("ClassWithProtectedConstructor");
-        Assert.False(constructor.IsPrivate);
-        Assert.True(constructor.IsFamily);
-        Assert.False(constructor.IsPublic);
+        await Assert.That(constructor.IsPrivate).IsFalse();
+        await Assert.That(constructor.IsFamily).IsTrue();
+        await Assert.That(constructor.IsPublic).IsFalse();
     }
 
-    [Fact]
-    public void ClassAbstractWithPrivateEmptyConstructor()
+    [Test]
+    public async Task ClassAbstractWithPrivateEmptyConstructor()
     {
         var constructor = assembly.GetConstructor("ClassAbstractWithPrivateConstructor");
-        Assert.False(constructor.IsFamily);
-        Assert.False(constructor.IsPublic);
+        await Assert.That(constructor.IsFamily).IsFalse();
+        await Assert.That(constructor.IsPublic).IsFalse();
     }
 
-    [Fact]
-    public void ClassAbstractWithProtectedEmptyConstructor()
+    [Test]
+    public async Task ClassAbstractWithProtectedEmptyConstructor()
     {
         var constructor = assembly.GetConstructor("ClassAbstractWithProtectedConstructor");
-        Assert.True(constructor.IsFamily);
-        Assert.False(constructor.IsPublic);
+        await Assert.That(constructor.IsFamily).IsTrue();
+        await Assert.That(constructor.IsPublic).IsFalse();
     }
 }

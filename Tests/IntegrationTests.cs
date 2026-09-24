@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Reflection;
 using Fody;
-using Xunit;
 
 public class IntegrationTests
 {
@@ -17,177 +16,177 @@ public class IntegrationTests
         assembly = testResult.Assembly;
     }
 
-    [Fact]
+    [Test]
     public void ClassInheritWithBothConstructors()
     {
         testResult.GetInstance("ClassInheritWithBothConstructors");
     }
 
-    [Fact]
+    [Test]
     public void ClassInheritWithEmptyConstructorFromOtherAssembly()
     {
         testResult.GetInstance("ClassInheritWithEmptyConstructorFromOtherAssembly");
     }
 
-    [Fact]
+    [Test]
     public void ClassInheritGenericWithEmptyConstructorFromOtherAssembly()
     {
         testResult.GetInstance("ClassInheritGenericWithEmptyConstructorFromOtherAssembly");
     }
 
-    [Fact]
-    public void ClassInheritWithNonEmptyConstructorFromOtherAssembly()
+    [Test]
+    public async Task ClassInheritWithNonEmptyConstructorFromOtherAssembly()
     {
-        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassInheritWithNonEmptyConstructorFromOtherAssembly"));
+        await Assert.That(() => testResult.GetInstance("ClassInheritWithNonEmptyConstructorFromOtherAssembly")).Throws<MissingMethodException>();
     }
 
-    [Fact]
-    public void ClassInheritGenericWithNonEmptyConstructorFromOtherAssembly()
+    [Test]
+    public async Task ClassInheritGenericWithNonEmptyConstructorFromOtherAssembly()
     {
-        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassInheritGenericWithNonEmptyConstructorFromOtherAssembly"));
+        await Assert.That(() => testResult.GetInstance("ClassInheritGenericWithNonEmptyConstructorFromOtherAssembly")).Throws<MissingMethodException>();
     }
 
-    [Fact]
+    [Test]
     public void ClassInheritAbstractWithEmptyConstructor()
     {
         testResult.GetInstance("ClassInheritAbstractWithEmptyConstructor");
     }
 
-    [Fact]
+    [Test]
     public void ClassInheritWithNullableParam()
     {
         testResult.GetInstance("ClassInheritWithNullableParam");
     }
 
-    [Fact]
+    [Test]
     public void ClassInheritWithEmptyConstructor()
     {
         testResult.GetInstance("ClassInheritWithEmptyConstructor");
     }
 
-    [Fact]
+    [Test]
     public void ClassInheritWithNonEmptyConstructor()
     {
         testResult.GetInstance("ClassInheritWithNonEmptyConstructor");
     }
 
-    [Fact]
+    [Test]
     public void ClassWithBothConstructors()
     {
         testResult.GetInstance("ClassWithBothConstructors");
     }
 
-    [Fact]
-    public void ClassWithDefaultSingleParamConstructor()
+    [Test]
+    public async Task ClassWithDefaultSingleParamConstructor()
     {
         var type = assembly.GetType("ClassWithDefaultSingleParamConstructor", true);
-        Assert.Equal(2, type.GetConstructors().Length);
+        await Assert.That(type.GetConstructors().Length).IsEqualTo(2);
         Activator.CreateInstance(type, "aString");
     }
 
-    [Fact]
+    [Test]
     public void ClassWithEmptyConstructor()
     {
         testResult.GetInstance("ClassWithEmptyConstructor");
     }
 
-    [Fact]
+    [Test]
     public void ClassWithNoEmptyConstructor()
     {
         testResult.GetInstance("ClassWithNoEmptyConstructor");
     }
 
-    [Fact]
-    public void ClassWithPrivateEmptyConstructor()
+    [Test]
+    public async Task ClassWithPrivateEmptyConstructor()
     {
-        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassWithPrivateConstructor"));
+        await Assert.That(() => testResult.GetInstance("ClassWithPrivateConstructor")).Throws<MissingMethodException>();
     }
 
-    [Fact]
-    public void ClassWithProtectedEmptyConstructor()
+    [Test]
+    public async Task ClassWithProtectedEmptyConstructor()
     {
-        Assert.Throws<MissingMethodException>(() => testResult.GetInstance("ClassWithProtectedConstructor"));
+        await Assert.That(() => testResult.GetInstance("ClassWithProtectedConstructor")).Throws<MissingMethodException>();
     }
 
-    [Fact]
-    public void ClassAbstractWithPrivateEmptyConstructor()
+    [Test]
+    public async Task ClassAbstractWithPrivateEmptyConstructor()
     {
         var constructor = assembly.GetConstructor("ClassAbstractWithPrivateConstructor");
-        Assert.False(constructor.IsPublic);
-        Assert.False(constructor.IsFamily);
+        await Assert.That(constructor.IsPublic).IsFalse();
+        await Assert.That(constructor.IsFamily).IsFalse();
     }
 
-    [Fact]
-    public void ClassAbstractWithProtectedEmptyConstructor()
+    [Test]
+    public async Task ClassAbstractWithProtectedEmptyConstructor()
     {
         var constructor = assembly.GetConstructor("ClassAbstractWithProtectedConstructor");
-        Assert.True(constructor.IsFamily);
-        Assert.False(constructor.IsPublic);
+        await Assert.That(constructor.IsFamily).IsTrue();
+        await Assert.That(constructor.IsPublic).IsFalse();
     }
 
-    [Fact]
+    [Test]
     public void ClassWithGeneric()
     {
         testResult.GetGenericInstance("ClassWithGeneric`1", typeof(string));
     }
 
-    [Fact]
+    [Test]
     public void ClassInheritWithGeneric()
     {
         testResult.GetInstance("ClassInheritWithGeneric");
     }
 
-    [Fact]
+    [Test]
     public void ClassWithGenericInheritWithGeneric()
     {
         testResult.GetGenericInstance("ClassWithGenericInheritWithGeneric`1", typeof(object));
     }
 
-    [Fact]
+    [Test]
     public void ClassInheritWithGenericInheritWithGeneric()
     {
         testResult.GetInstance("ClassInheritWithGenericInheritWithGeneric");
     }
 
-    [Fact]
+    [Test]
     public void ClassWithGenericInReverseDeclarationOrder()
     {
         testResult.GetGenericInstance("ClassWithGenericInReverseDeclarationOrder`1", typeof(object));
     }
 
-    [Fact]
+    [Test]
     public void ClassInheritWithGenericInReverseDeclarationOrder()
     {
         testResult.GetInstance("ClassInheritWithGenericInReverseDeclarationOrder");
     }
 
-    [Fact]
-    public void ClassWithInitializedFields()
+    [Test]
+    public async Task ClassWithInitializedFields()
     {
         var instance = testResult.GetInstance("ClassWithInitializedFields");
-        Assert.Equal(0, instance.X);
-        Assert.Null(instance.Y);
-        Assert.Null(instance.Z);
+        await Assert.That((object?)instance.X).IsEqualTo(0);
+        await Assert.That((object?)instance.Y).IsNull();
+        await Assert.That((object?)instance.Z).IsNull();
     }
 
-    [Fact]
-    public void ClassWithInitializedProperties()
+    [Test]
+    public async Task ClassWithInitializedProperties()
     {
         var instance = testResult.GetInstance("ClassWithInitializedProperties");
-        Assert.Equal(0, instance.X);
-        Assert.Null(instance.Y);
-        Assert.Null(instance.Z);
+        await Assert.That((object?)instance.X).IsEqualTo(0);
+        await Assert.That((object?)instance.Y).IsNull();
+        await Assert.That((object?)instance.Z).IsNull();
     }
 
-    [Fact]
-    public void ReproBug143()
+    [Test]
+    public async Task ReproBug143()
     {
         var instance = testResult.GetInstance("Bug143Child");
-        Assert.NotNull(instance);
+        await Assert.That((object?)instance).IsNotNull();
     }
 
 #if NET5_0
-    [Fact]
+    [Test]
     public void RecordWithParameter()
     {
         testResult.GetInstance("RecordWithParameter");

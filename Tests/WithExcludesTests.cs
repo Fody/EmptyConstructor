@@ -1,6 +1,5 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Fody;
-using Xunit;
 
 public class WithExcludesTests
 {
@@ -22,16 +21,16 @@ public class WithExcludesTests
         assembly = testResult.Assembly;
     }
 
-    [Fact]
+    [Test]
     public void ClassInheritWithNonEmptyConstructor()
     {
         testResult.GetInstance("ClassInheritWithNonEmptyConstructor");
     }
 
-    [Fact]
-    public void ClassInheritWithNonEmptyConstructorInNamespace()
+    [Test]
+    public async Task ClassInheritWithNonEmptyConstructorInNamespace()
     {
         var type = assembly.GetType("MyNameSpace.ClassWithNoEmptyConstructorInNamespace", true);
-        Assert.Single(type.GetConstructors());
+        await Assert.That(type.GetConstructors()).HasSingleItem();
     }
 }

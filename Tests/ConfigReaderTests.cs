@@ -1,12 +1,11 @@
-﻿using System.Xml.Linq;
+using System.Xml.Linq;
 using Fody;
 using Mono.Cecil;
-using Xunit;
 
 public class ConfigReaderTests
 {
-    [Fact]
-    public void ExcludeNamespacesNode()
+    [Test]
+    public async Task ExcludeNamespacesNode()
     {
         var xElement = XElement.Parse(
             """
@@ -21,105 +20,105 @@ public class ConfigReaderTests
             """);
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.Equal("Foo", moduleWeaver.ExcludeNamespaces[0]);
-        Assert.Equal("Bar", moduleWeaver.ExcludeNamespaces[1]);
-        Assert.Equal("Foo.Bar", moduleWeaver.ExcludeNamespaces[2]);
+        await Assert.That(moduleWeaver.ExcludeNamespaces[0]).IsEqualTo("Foo");
+        await Assert.That(moduleWeaver.ExcludeNamespaces[1]).IsEqualTo("Bar");
+        await Assert.That(moduleWeaver.ExcludeNamespaces[2]).IsEqualTo("Foo.Bar");
     }
 
-    [Fact]
-    public void VisibilityFamily()
+    [Test]
+    public async Task VisibilityFamily()
     {
         var xElement = XElement.Parse("<EmptyConstructor Visibility='family'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.Equal(MethodAttributes.Family, moduleWeaver.Visibility);
+        await Assert.That(moduleWeaver.Visibility).IsEqualTo(MethodAttributes.Family);
     }
 
-    [Fact]
-    public void VisibilityDefault()
+    [Test]
+    public async Task VisibilityDefault()
     {
         var xElement = XElement.Parse("<EmptyConstructor/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.Equal(MethodAttributes.Public, moduleWeaver.Visibility);
+        await Assert.That(moduleWeaver.Visibility).IsEqualTo(MethodAttributes.Public);
     }
 
-    [Fact]
-    public void VisibilityPublic()
+    [Test]
+    public async Task VisibilityPublic()
     {
         var xElement = XElement.Parse("<EmptyConstructor Visibility='public'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.Equal(MethodAttributes.Public, moduleWeaver.Visibility);
+        await Assert.That(moduleWeaver.Visibility).IsEqualTo(MethodAttributes.Public);
     }
 
-    [Fact]
-    public void MakeExistingEmptyConstructorsVisible_Default()
+    [Test]
+    public async Task MakeExistingEmptyConstructorsVisible_Default()
     {
         var xElement = XElement.Parse("<EmptyConstructor/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.False(moduleWeaver.MakeExistingEmptyConstructorsVisible);
+        await Assert.That(moduleWeaver.MakeExistingEmptyConstructorsVisible).IsFalse();
     }
 
-    [Fact]
-    public void MakeExistingEmptyConstructorsVisible_False()
+    [Test]
+    public async Task MakeExistingEmptyConstructorsVisible_False()
     {
         var xElement = XElement.Parse("<EmptyConstructor MakeExistingEmptyConstructorsVisible='False'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.False(moduleWeaver.MakeExistingEmptyConstructorsVisible);
+        await Assert.That(moduleWeaver.MakeExistingEmptyConstructorsVisible).IsFalse();
     }
 
-    [Fact]
-    public void MakeExistingEmptyConstructorsVisible_True()
+    [Test]
+    public async Task MakeExistingEmptyConstructorsVisible_True()
     {
         var xElement = XElement.Parse("<EmptyConstructor MakeExistingEmptyConstructorsVisible='True'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.True(moduleWeaver.MakeExistingEmptyConstructorsVisible);
+        await Assert.That(moduleWeaver.MakeExistingEmptyConstructorsVisible).IsTrue();
     }
 
-    [Fact]
-    public void PreserveInitializers_Default()
+    [Test]
+    public async Task PreserveInitializers_Default()
     {
         var xElement = XElement.Parse("<EmptyConstructor/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.False(moduleWeaver.PreserveInitializers);
+        await Assert.That(moduleWeaver.PreserveInitializers).IsFalse();
     }
 
-    [Fact]
-    public void PreserveInitializers_False()
+    [Test]
+    public async Task PreserveInitializers_False()
     {
         var xElement = XElement.Parse("<EmptyConstructor PreserveInitializers='False'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.False(moduleWeaver.PreserveInitializers);
+        await Assert.That(moduleWeaver.PreserveInitializers).IsFalse();
     }
 
-    [Fact]
-    public void PreserveInitializers_True()
+    [Test]
+    public async Task PreserveInitializers_True()
     {
         var xElement = XElement.Parse("<EmptyConstructor PreserveInitializers='True'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.True(moduleWeaver.PreserveInitializers);
+        await Assert.That(moduleWeaver.PreserveInitializers).IsTrue();
     }
 
-    [Fact]
-    public void ExcludeNamespacesAttribute()
+    [Test]
+    public async Task ExcludeNamespacesAttribute()
     {
         var xElement = XElement.Parse(
             "<EmptyConstructor ExcludeNamespaces='Foo|Bar'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.Equal("Foo", moduleWeaver.ExcludeNamespaces[0]);
-        Assert.Equal("Bar", moduleWeaver.ExcludeNamespaces[1]);
+        await Assert.That(moduleWeaver.ExcludeNamespaces[0]).IsEqualTo("Foo");
+        await Assert.That(moduleWeaver.ExcludeNamespaces[1]).IsEqualTo("Bar");
     }
 
-    [Fact]
-    public void ExcludeNamespacesCombined()
+    [Test]
+    public async Task ExcludeNamespacesCombined()
     {
         var xElement = XElement.Parse(
             """
@@ -131,12 +130,12 @@ public class ConfigReaderTests
             """);
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.Equal("Foo", moduleWeaver.ExcludeNamespaces[0]);
-        Assert.Equal("Bar", moduleWeaver.ExcludeNamespaces[1]);
+        await Assert.That(moduleWeaver.ExcludeNamespaces[0]).IsEqualTo("Foo");
+        await Assert.That(moduleWeaver.ExcludeNamespaces[1]).IsEqualTo("Bar");
     }
 
-    [Fact]
-    public void IncludeNamespacesNode()
+    [Test]
+    public async Task IncludeNamespacesNode()
     {
         var xElement = XElement.Parse(
             """
@@ -150,34 +149,34 @@ public class ConfigReaderTests
             """);
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.Equal("Foo", moduleWeaver.IncludeNamespaces[0]);
-        Assert.Equal("Bar", moduleWeaver.IncludeNamespaces[1]);
-        Assert.Equal("Foo.Bar", moduleWeaver.IncludeNamespaces[2]);
+        await Assert.That(moduleWeaver.IncludeNamespaces[0]).IsEqualTo("Foo");
+        await Assert.That(moduleWeaver.IncludeNamespaces[1]).IsEqualTo("Bar");
+        await Assert.That(moduleWeaver.IncludeNamespaces[2]).IsEqualTo("Foo.Bar");
     }
 
-    [Fact]
-    public void IncludeNamespacesAttribute()
+    [Test]
+    public async Task IncludeNamespacesAttribute()
     {
         var xElement = XElement.Parse(
             "<EmptyConstructor IncludeNamespaces='Foo|Bar'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.Equal("Foo", moduleWeaver.IncludeNamespaces[0]);
-        Assert.Equal("Bar", moduleWeaver.IncludeNamespaces[1]);
+        await Assert.That(moduleWeaver.IncludeNamespaces[0]).IsEqualTo("Foo");
+        await Assert.That(moduleWeaver.IncludeNamespaces[1]).IsEqualTo("Bar");
     }
 
-    [Fact]
-    public void IncludeAndExcludeNamespacesAttribute()
+    [Test]
+    public async Task IncludeAndExcludeNamespacesAttribute()
     {
         var xElement = XElement.Parse(
             "<EmptyConstructor IncludeNamespaces='Bar' ExcludeNamespaces='Foo'/>");
         var moduleWeaver = new ModuleWeaver { Config = xElement };
-        var exception = Assert.Throws<WeavingException>(() => moduleWeaver.ReadConfig());
-        Assert.Equal("Either configure IncludeNamespaces OR ExcludeNamespaces, not both.",exception.Message);
+        var exception = await Assert.That(() => moduleWeaver.ReadConfig()).Throws<WeavingException>();
+        await Assert.That(exception!.Message).IsEqualTo("Either configure IncludeNamespaces OR ExcludeNamespaces, not both.");
     }
 
-    [Fact]
-    public void IncludeNamespacesCombined()
+    [Test]
+    public async Task IncludeNamespacesCombined()
     {
         var xElement = XElement.Parse(
             """
@@ -189,7 +188,7 @@ public class ConfigReaderTests
             """);
         var moduleWeaver = new ModuleWeaver { Config = xElement };
         moduleWeaver.ReadConfig();
-        Assert.Equal("Foo", moduleWeaver.IncludeNamespaces[0]);
-        Assert.Equal("Bar", moduleWeaver.IncludeNamespaces[1]);
+        await Assert.That(moduleWeaver.IncludeNamespaces[0]).IsEqualTo("Foo");
+        await Assert.That(moduleWeaver.IncludeNamespaces[1]).IsEqualTo("Bar");
     }
 }

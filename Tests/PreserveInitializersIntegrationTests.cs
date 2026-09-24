@@ -1,5 +1,4 @@
 using Fody;
-using Xunit;
 
 public class PreserveInitializersIntegrationTests
 {
@@ -15,43 +14,43 @@ public class PreserveInitializersIntegrationTests
             assemblyName: nameof(PreserveInitializersIntegrationTests));
     }
 
-    [Fact]
-    public void ClassWithInitializedFields()
+    [Test]
+    public async Task ClassWithInitializedFields()
     {
         var instance = testResult.GetInstance("ClassWithInitializedFields");
-        Assert.Equal(9, instance.X);
-        Assert.Equal("aString", instance.Y);
-        Assert.NotNull(instance.Z);
+        await Assert.That((object?)instance.X).IsEqualTo(9);
+        await Assert.That((object?)instance.Y).IsEqualTo("aString");
+        await Assert.That((object?)instance.Z).IsNotNull();
     }
 
-    [Fact]
-    public void ClassWithInitializedProperties()
+    [Test]
+    public async Task ClassWithInitializedProperties()
     {
         var instance = testResult.GetInstance("ClassWithInitializedProperties");
-        Assert.Equal(9, instance.X);
-        Assert.Equal("aString", instance.Y);
-        Assert.NotNull(instance.Z);
+        await Assert.That((object?)instance.X).IsEqualTo(9);
+        await Assert.That((object?)instance.Y).IsEqualTo("aString");
+        await Assert.That((object?)instance.Z).IsNotNull();
     }
 
-    [Fact]
-    public void ReproBug143()
+    [Test]
+    public async Task ReproBug143()
     {
         var instance = testResult.GetInstance("Bug143Child");
-        Assert.NotNull(instance);
+        await Assert.That((object?)instance).IsNotNull();
     }
 
 #if NET5_0
-    [Fact]
+    [Test]
     public void RecordWithParameter()
     {
         testResult.GetInstance("RecordWithParameter");
     }
 
-    [Fact]
-    public void RecordWithParameterAndInitializedField()
+    [Test]
+    public async Task RecordWithParameterAndInitializedField()
     {
         var instance = testResult.GetInstance("RecordWithParameterAndInitializedField");
-        Assert.Equal(9, instance.X);
+        await Assert.That((object?)instance.X).IsEqualTo(9);
     }
 #endif
 }
